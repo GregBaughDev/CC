@@ -1,6 +1,7 @@
 package inputHandler
 
 import java.io.File
+import java.util.Scanner
 
 class InputHandler {
     fun handleInput(handleType: String?, file: File) {
@@ -8,7 +9,7 @@ class InputHandler {
             "c" -> println(toBytesLength(file))
             "l" -> println(toLinesLength(file))
             "w" -> println(toWordsLength(file))
-            "m" -> println("characters")
+            "m" -> println(toCharactersLength(file))
             else -> println("all")
         }
     }
@@ -22,11 +23,20 @@ class InputHandler {
     }
 
     private fun toWordsLength(file: File): Int {
-        // This is the issue atm - try char isWhiteSpace fn
-        return file.readLines().toString().split(" ").count()
+        var count = 0
+        Scanner(file).use {
+            while (it.hasNext()) {
+                it.forEach { _ ->
+                    count++
+                }
+            }
+        }
+        return count
     }
 
-
+    private fun toCharactersLength(file: File): Int {
+        return file.readLines().toString().toCharArray().count()
+    }
 }
 
 
