@@ -1,16 +1,24 @@
 package inputHandler
 
+import FileResult
 import java.io.File
 import java.util.Scanner
 
 class InputHandler {
-    fun handleInput(handleType: String?, file: File) {
-        when (handleType) {
-            "c" -> println(toBytesLength(file))
-            "l" -> println(toLinesLength(file))
-            "w" -> println(toWordsLength(file))
-            "m" -> println(toCharactersLength(file))
-            else -> println("all")
+    fun handleInput(handleType: String?, file: File): FileResult {
+        return FileResult().apply {
+            when (handleType) {
+                "c" -> bytes = toBytesLength(file)
+                "l" -> lines = toLinesLength(file)
+                "w" -> words = toWordsLength(file)
+                "m" -> characters = toCharactersLength(file)
+                else -> {
+                    bytes = toBytesLength(file)
+                    lines = toLinesLength(file)
+                    words = toWordsLength(file)
+                    characters = toCharactersLength(file)
+                }
+            }
         }
     }
 
