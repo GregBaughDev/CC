@@ -1,6 +1,6 @@
-package inputHandler
+package ccwc.inputhandler
 
-import FileResult
+import ccwc.FileResult
 import java.io.File
 import java.util.Scanner
 

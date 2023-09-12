@@ -1,4 +1,6 @@
-import inputHandler.InputHandler
+package ccwc
+
+import ccwc.inputhandler.InputHandler
 import java.io.File
 
 class CCWC(fileName: String) {
