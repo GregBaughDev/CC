@@ -2,9 +2,6 @@ import ccwc.CCWC
 import ccwc.FileResult
 
 fun main(args: Array<String>) {
-    // also need to find out how to call the program with "ccwc"
-    // FINAL -> Need to handle reading from stdin
-    println("ARGS: $args")
     if (args.isEmpty()) throw Exception("Must provide program arguments")
 
     val (readMethod, fileName) = handleArgs(args)
