@@ -1,7 +1,7 @@
 package parser
 
 import parser.analysers.Lexical
-import parser.analysers.Syntax
+import parser.analysers.Syntax2
 import java.io.File
 import java.util.Scanner
 
@@ -9,7 +9,7 @@ class Parser(fileName: String) {
     private val file = File(fileName)
     private val scanner = Scanner(file)
     private val lexical = Lexical()
-    private val syntax = Syntax()
+    private val syntax = Syntax2()
 
     fun analyse() {
         val parsedList = lexicalParse()

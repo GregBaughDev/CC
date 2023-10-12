@@ -1,42 +1,28 @@
 package parser.analysers
 
-enum class ObjectChars {
-    START {
-        override fun toChar(): Char {
-            return '{'
-        }
-    },
-    END {
-        override fun toChar(): Char {
-            return '}'
-        }
-    };
-
-    abstract fun toChar(): Char
-}
-
 class Syntax {
+    val lexDict = mapOf('{' to listOf("\"", "}"))
+
     // Syntactic analysis
     // Work through the symbols and use some sort of tree DS
     fun analyse(parsedList: List<String>): Boolean {
         // probs use a for loop
         var result = false
         for (i in parsedList) {
+            println("i: $i")
             // have a method here which handles the first character and deals with it appropriately
             val charArray = i.toCharArray()
-            result = handleSymbol(charArray[0])
+            val charArrayIndices = charArray.indices
+            for (i in charArrayIndices) {
+                if (charArray[i] == '{') {
+                    for (j in charArrayIndices) {
+                        if (charArray[j] == '}')
+                            result = true
+                            break
+                    }
+                }
+            }
         }
         return result
-    }
-    // will need to pass first char and then the whole string/object/boolean in
-    private fun handleSymbol(char: Char): Boolean {
-        return when (char) {
-            '{', '}' -> isObjectChar(char)
-            else -> false
-        }
-    }
-
-    private fun isObjectChar(char: Char): Boolean {
-        return char == ObjectChars.START.toChar() || char == ObjectChars.END.toChar()
     }
 }
