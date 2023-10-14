@@ -10,6 +10,8 @@ public class CC3 {
         String filename = args[0];
         Compression compression = new Compression(filename);
         Map<Character, Integer> c = compression.readFile();
+        // Below to add to the array of TreeLeafNodes
+        c.forEach((k, v) -> System.out.println("K: " + k + ", V: " + v));
         System.out.println("X: " + c.get('X'));
         System.out.println("t: " + c.get('t'));
     }
