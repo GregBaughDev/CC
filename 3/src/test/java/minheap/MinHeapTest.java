@@ -1,6 +1,6 @@
 package minheap;
 
-import htree.TreeLeafNode;
+import htree.HuffmanNode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,12 +10,13 @@ class MinHeapTest {
 
     @Test
     void minHeapTestInsertAndDeleteValues_evenElems() {
-        TreeLeafNode C = new TreeLeafNode('C', 10);
-        TreeLeafNode D = new TreeLeafNode('D', 20);
-        TreeLeafNode F = new TreeLeafNode('F', 19);
-        TreeLeafNode X = new TreeLeafNode('X', 2);
-        TreeLeafNode P = new TreeLeafNode('P', 5);
-        TreeLeafNode G = new TreeLeafNode('G', 12);
+        HuffmanNode C = new HuffmanNode('C', 1010292);
+        HuffmanNode D = new HuffmanNode('D', 2031);
+        HuffmanNode F = new HuffmanNode('F', 19);
+        HuffmanNode X = new HuffmanNode('X', 2);
+        HuffmanNode H = new HuffmanNode('H', 1);
+        HuffmanNode P = new HuffmanNode('P', 51239);
+        HuffmanNode G = new HuffmanNode('G', 120000000);
 
         minHeap.insertValue(C);
         minHeap.insertValue(D);
@@ -23,24 +24,26 @@ class MinHeapTest {
         minHeap.insertValue(X);
         minHeap.insertValue(P);
         minHeap.insertValue(G);
+        minHeap.insertValue(H);
 
-        assertEquals(6, minHeap.length);
+        assertEquals(7, minHeap.length);
+        assertEquals(H, minHeap.delete());
         assertEquals(X, minHeap.delete());
+        assertEquals(F, minHeap.delete());
+        assertEquals(D, minHeap.delete());
         assertEquals(P, minHeap.delete());
-        assertEquals(C, minHeap.delete());
-        assertEquals(G, minHeap.delete());
         assertEquals(2, minHeap.length);
     }
 
     @Test
     void minHeapTestInsertAndDeleteValues_oddElems() {
-        TreeLeafNode C = new TreeLeafNode('C', 10);
-        TreeLeafNode D = new TreeLeafNode('D', 20);
-        TreeLeafNode F = new TreeLeafNode('F', 19);
-        TreeLeafNode X = new TreeLeafNode('X', 2);
-        TreeLeafNode P = new TreeLeafNode('P', 5);
-        TreeLeafNode G = new TreeLeafNode('G', 12);
-        TreeLeafNode M = new TreeLeafNode('M', 100);
+        HuffmanNode C = new HuffmanNode('C', 10);
+        HuffmanNode D = new HuffmanNode('D', 20);
+        HuffmanNode F = new HuffmanNode('F', 19);
+        HuffmanNode X = new HuffmanNode('X', 2);
+        HuffmanNode P = new HuffmanNode('P', 5);
+        HuffmanNode G = new HuffmanNode('G', 12);
+        HuffmanNode M = new HuffmanNode('M', 100);
 
         minHeap.insertValue(C);
         minHeap.insertValue(D);
@@ -57,5 +60,4 @@ class MinHeapTest {
         assertEquals(G, minHeap.delete());
         assertEquals(3, minHeap.length);
     }
-
 }

@@ -1,29 +1,29 @@
 package minheap;
 
-import htree.TreeLeafNode;
+import htree.HuffmanNode;
 
 import java.util.ArrayList;
 
 public class MinHeap {
-    ArrayList<TreeLeafNode> data;
-    int length;
+    ArrayList<HuffmanNode> data;
+    public int length;
 
     public MinHeap() {
         this.data = new ArrayList<>();
         this.length = 0;
     }
 
-    public void insertValue(TreeLeafNode value) {
+    public void insertValue(HuffmanNode value) {
         this.data.add(this.length, value);
         this.heapifyUp(this.length);
         this.length++;
     }
 
-    public TreeLeafNode delete() {
+    public HuffmanNode delete() {
         if (this.length == 0) {
             return null;
         }
-        TreeLeafNode out = this.data.get(0);
+        HuffmanNode out = this.data.get(0);
         this.length--;
 
         if (this.length == 0) {
@@ -43,15 +43,15 @@ public class MinHeap {
             return;
         }
 
-        TreeLeafNode leftValue = this.data.get(leftIndex);
-        TreeLeafNode rightValue = this.data.get(rightIndex);
-        TreeLeafNode value = this.data.get(idx);
+        HuffmanNode leftValue = this.data.get(leftIndex);
+        HuffmanNode rightValue = this.data.get(rightIndex);
+        HuffmanNode value = this.data.get(idx);
 
-        if (leftValue.weight() > rightValue.weight() && value.weight() > rightValue.weight()) {
+        if (leftValue.getWeight() > rightValue.getWeight() && value.getWeight() > rightValue.getWeight()) {
             this.data.set(idx, rightValue);
             this.data.set(rightIndex, value);
             this.heapifyDown(rightIndex);
-        } else if (rightValue.weight() > leftValue.weight() && value.weight() > leftValue.weight()) {
+        } else if (rightValue.getWeight() > leftValue.getWeight() && value.getWeight() > leftValue.getWeight()) {
             this.data.set(idx, leftValue);
             this.data.set(leftIndex, value);
             this.heapifyDown(leftIndex);
@@ -62,12 +62,11 @@ public class MinHeap {
         if (length == 0) {
             return;
         }
-
         int parent = this.getParentIndex(idx);
-        TreeLeafNode parentValue = this.data.get(parent);
-        TreeLeafNode value = this.data.get(idx);
+        HuffmanNode parentValue = this.data.get(parent);
+        HuffmanNode value = this.data.get(idx);
 
-        if (parentValue.weight() > value.weight()) {
+        if (parentValue.getWeight() > value.getWeight()) {
             this.data.set(idx, parentValue);
             this.data.set(parent, value);
             this.heapifyUp(parent);
