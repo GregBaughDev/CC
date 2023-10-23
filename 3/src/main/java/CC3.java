@@ -1,4 +1,7 @@
 import compression.Compression;
+import htree.HuffResult;
+import htree.HuffmanNode;
+import htree.TreeHandler;
 
 import java.util.Map;
 
@@ -9,10 +12,12 @@ public class CC3 {
         }
         String filename = args[0];
         Compression compression = new Compression(filename);
-        Map<Character, Integer> c = compression.readFile();
-        // Below to add to the array of TreeLeafNodes
-        c.forEach((k, v) -> System.out.println("K: " + k + ", V: " + v));
-        System.out.println("X: " + c.get('X'));
-        System.out.println("t: " + c.get('t'));
+        TreeHandler treeHandler = new TreeHandler();
+
+        Map<Character, Integer> mappedResults = compression.readFile();
+        mappedResults.forEach((k, v) -> treeHandler.addNodeItemToHeap(new HuffmanNode(k, v)));
+        HuffmanNode huffTree = treeHandler.createHuffTree();
+        // Example
+        HuffResult prefix = treeHandler.findElement('A', huffTree);
     }
 }
