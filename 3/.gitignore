@@ -5,5 +5,5 @@ build.gradle
 gradlew
 gradlew.bat
 settings.gradle
-cc3.txt
+*.txt
 build
