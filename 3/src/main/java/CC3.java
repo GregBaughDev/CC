@@ -1,4 +1,5 @@
 import compression.Compression;
+import decompression.Decompression;
 import htree.HuffResult;
 import htree.HuffmanNode;
 import htree.TreeHandler;
@@ -47,7 +48,14 @@ public class CC3 {
         } else {
             fileToParse = args[1];
             headerFile = args[2];
-            System.out.println("DECODE");
+            Decompression decompression = new Decompression(headerFile);
+            TreeHandler treeHandler = new TreeHandler();
+            Map<String, String> mappedHeader = decompression.parseHeader();
+            // NEED TO SORT THE TYPES FOR THE HUFFMAN NODES
         }
+
+        // TO DO:
+        // Refactor
+        // Types throughout - i.e the trees
     }
 }

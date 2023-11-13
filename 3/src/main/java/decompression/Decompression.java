@@ -10,7 +10,7 @@ import static compression.Compression.HEADER_END;
 
 public class Decompression {
     File headerFile;
-    // First lets parse the header
+
     public Decompression(String headerFile) {
         this.headerFile = new File(headerFile);
     }
@@ -28,4 +28,10 @@ public class Decompression {
         }
         return headerMap;
     }
+
+    // TO DO -> Find the val -> While .notLeaf() - go left, go right
+    // Read the file
+    // Get the whole string and traverse the tree - return a character
+    // remove the already traversed digits
+    // build up the text
 }
