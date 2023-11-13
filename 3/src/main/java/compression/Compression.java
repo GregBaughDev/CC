@@ -6,6 +6,7 @@ import java.util.*;
 public class Compression {
     File fileToParse;
     File outputFile;
+    public static final String HEADER_END = "H_END";
 
     public Compression(String fileToParse, String outputFile) {
         this.fileToParse = new File(fileToParse);
@@ -40,14 +41,14 @@ public class Compression {
             prefixMap.forEach((k, v) -> {
                 writer.println(k + v);
             });
-            writer.println("H_END");
+            writer.println(HEADER_END);
         }
     }
 
     private void compressText(Map<Character, String> prefixMap) throws IOException {
         try (
             Scanner s = new Scanner(fileToParse);
-            FileOutputStream fos = new FileOutputStream(outputFile);
+            FileOutputStream fos = new FileOutputStream(outputFile)
         ) {
             while (s.hasNext()) {
                 // Append the prefix strings to prefixLine
