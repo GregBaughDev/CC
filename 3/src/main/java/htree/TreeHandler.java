@@ -54,5 +54,25 @@ public class TreeHandler {
         }
         return result;
     }
+
+    public HuffResult findChar(String prefixString, HuffmanNode node) {
+        HuffResult result = new HuffResult();
+        return getCharFromPrefix(prefixString, 0, node, result);
+    }
+
+    private HuffResult getCharFromPrefix(String prefixString, int prefixIndex, HuffmanNode node, HuffResult result) {
+        if (node.isLeaf()) {
+            result.setHuffResult(node.getElement());
+        }
+
+        if (prefixString.charAt(prefixIndex) == '1') {
+            getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
+        }
+
+        if (prefixString.charAt(prefixIndex) == '0') {
+            getCharFromPrefix(prefixString, prefixIndex + 1, node.getLeft(), result);
+        }
+        return result;
+    }
 }
 

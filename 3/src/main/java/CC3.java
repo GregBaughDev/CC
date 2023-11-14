@@ -44,14 +44,15 @@ public class CC3 {
                 HuffResult prefix = treeHandler.findElement(k, huffTree);
                 prefixCodeTable.put(k, prefix.getPrefixCode());
             });
-            compression.writeToOutputFile(prefixCodeTable);
+            compression.writeToOutputFile(mappedResults, prefixCodeTable);
         } else {
             fileToParse = args[1];
             headerFile = args[2];
             Decompression decompression = new Decompression(headerFile);
             TreeHandler treeHandler = new TreeHandler();
-            Map<String, String> mappedHeader = decompression.parseHeader();
-            // NEED TO SORT THE TYPES FOR THE HUFFMAN NODES
+            Map<String, Integer> mappedHeader = decompression.parseHeader();
+            mappedHeader.forEach((k, v) -> treeHandler.addNodeItemToHeap(new HuffmanNode(k.toCharArray()[0], v)));
+            HuffmanNode huffTree = treeHandler.createHuffTree();
         }
 
         // TO DO:

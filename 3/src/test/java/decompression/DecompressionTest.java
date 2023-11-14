@@ -19,25 +19,25 @@ class DecompressionTest {
     @Test
     void parseHeader() throws IOException {
         PrintWriter pw = new PrintWriter(HEADER_FILE);
-        pw.println("O10011000101010010");
-        pw.println("g1001");
-        pw.println("\\10010100000001");
-        pw.println("?1110");
-        pw.println("*10000");
-        pw.println("A111111");
-        pw.println("b00");
+        pw.println("O:345");
+        pw.println("g:123");
+        pw.println("\\:1");
+        pw.println("?:110");
+        pw.println("*:89");
+        pw.println("A:69");
+        pw.println("b:12333");
         pw.println(HEADER_END);
         pw.close();
 
         Decompression decompression = new Decompression(HEADER_FILE);
-        Map<String, String> testMap = decompression.parseHeader();
-        assertEquals("10011000101010010", testMap.get("O"));
-        assertEquals("1001", testMap.get("g"));
-        assertEquals("10010100000001", testMap.get("\\"));
-        assertEquals("1110", testMap.get("?"));
-        assertEquals("10000", testMap.get("*"));
-        assertEquals("111111", testMap.get("A"));
-        assertEquals("00", testMap.get("b"));
+        Map<String, Integer> testMap = decompression.parseHeader();
+        assertEquals(345, testMap.get("O"));
+        assertEquals(123, testMap.get("g"));
+        assertEquals(1, testMap.get("\\"));
+        assertEquals(110, testMap.get("?"));
+        assertEquals(89, testMap.get("*"));
+        assertEquals(69, testMap.get("A"));
+        assertEquals(12333, testMap.get("b"));
         assertNull(testMap.get(HEADER_END));
         Files.delete(Path.of(HEADER_FILE));
     }

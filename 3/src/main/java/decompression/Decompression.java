@@ -15,21 +15,21 @@ public class Decompression {
         this.headerFile = new File(headerFile);
     }
 
-    public Map<String, String> parseHeader() throws FileNotFoundException {
-        HashMap<String, String> headerMap = new HashMap<>();
+    public Map<String, Integer> parseHeader() throws FileNotFoundException {
+        HashMap<String, Integer> headerMap = new HashMap<>();
         try (Scanner s = new Scanner(headerFile)) {
             while (s.hasNext()) {
                 String inputLine = s.nextLine();
                 if (inputLine.equalsIgnoreCase(HEADER_END)) {
                     break;
                 }
-                headerMap.put(inputLine.substring(0, 1), inputLine.substring(1));
+                headerMap.put(inputLine.substring(0, 1), Integer.parseInt(inputLine.substring(2)));
             }
         }
         return headerMap;
     }
 
-    // TO DO -> Find the val -> While .notLeaf() - go left, go right
+    // TO DO -> Write test for recursive function to get char
     // Read the file
     // Get the whole string and traverse the tree - return a character
     // remove the already traversed digits

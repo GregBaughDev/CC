@@ -30,16 +30,15 @@ public class Compression {
         return charResults;
     }
 
-    public void writeToOutputFile(Map<Character, String> prefixMap) throws IOException {
-        writeFileHeader(prefixMap);
+    public void writeToOutputFile(Map<Character, Integer> headerMap, Map<Character, String> prefixMap) throws IOException {
+        writeFileHeader(headerMap);
         compressText(prefixMap);
     }
 
-    private void writeFileHeader(Map<Character, String> prefixMap) throws FileNotFoundException {
+    private void writeFileHeader(Map<Character, Integer> prefixMap) throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter("H_" + outputFile)) {
-            writer.println("H_START");
             prefixMap.forEach((k, v) -> {
-                writer.println(k + v);
+                writer.println(k + ":" + v);
             });
             writer.println(HEADER_END);
         }

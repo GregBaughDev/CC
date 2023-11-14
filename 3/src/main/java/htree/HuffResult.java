@@ -11,6 +11,10 @@ public class HuffResult {
         this.elem = elem;
     }
 
+    public void setHuffResult(char elem) {
+        this.elem = elem;
+    }
+
     public char getElem() {
         return this.elem;
     }
