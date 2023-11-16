@@ -29,7 +29,7 @@ public class Decompression {
         return headerMap;
     }
 
-    // TO DO -> Write test for recursive function to get char
+    // TO DO ->
     // Read the file
     // Get the whole string and traverse the tree - return a character
     // remove the already traversed digits

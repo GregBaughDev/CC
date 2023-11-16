@@ -33,7 +33,6 @@ public class TreeHandler {
         queue.add(item);
     }
 
-    // Write some tests to check the weight of the parent node
     public HuffResult findElement(char elem, HuffmanNode node) {
         String prefix = "";
         HuffResult result = new HuffResult();
@@ -65,12 +64,14 @@ public class TreeHandler {
             result.setHuffResult(node.getElement());
         }
 
-        if (prefixString.charAt(prefixIndex) == '1') {
-            getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
-        }
+        if (prefixIndex < prefixString.length()) {
+            if (prefixString.charAt(prefixIndex) == '1') {
+                getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
+            }
 
-        if (prefixString.charAt(prefixIndex) == '0') {
-            getCharFromPrefix(prefixString, prefixIndex + 1, node.getLeft(), result);
+            if (prefixString.charAt(prefixIndex) == '0') {
+                getCharFromPrefix(prefixString, prefixIndex + 1, node.getLeft(), result);
+            }
         }
         return result;
     }
