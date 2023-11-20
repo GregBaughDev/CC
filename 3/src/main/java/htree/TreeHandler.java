@@ -1,5 +1,6 @@
 package htree;
 
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class TreeHandler {
@@ -61,10 +62,10 @@ public class TreeHandler {
 
     private HuffResult getCharFromPrefix(String prefixString, int prefixIndex, HuffmanNode node, HuffResult result) {
         if (node.isLeaf()) {
-            result.setHuffResult(node.getElement());
+            result.setHuffResult(node.getElement(), prefixIndex);
         }
 
-        if (prefixIndex < prefixString.length()) {
+        if (prefixIndex < prefixString.length() && result.getElem() == null) {
             if (prefixString.charAt(prefixIndex) == '1') {
                 getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
             }

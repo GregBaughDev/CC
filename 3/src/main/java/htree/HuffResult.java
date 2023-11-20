@@ -1,8 +1,9 @@
 package htree;
 
 public class HuffResult {
-    private char elem;
+    private Character elem = null;
     private String prefixCode = null;
+    private int prefixIndex;
 
     public HuffResult() {}
 
@@ -11,16 +12,21 @@ public class HuffResult {
         this.elem = elem;
     }
 
-    public void setHuffResult(char elem) {
+    public void setHuffResult(char elem, int prefixIndex) {
         this.elem = elem;
+        this.prefixIndex = prefixIndex;
     }
 
-    public char getElem() {
+    public Character getElem() {
         return this.elem;
     }
 
     public String getPrefixCode() {
         return this.prefixCode;
+    }
+
+    public int getPrefixIndex() {
+        return this.prefixIndex;
     }
 
     @Override

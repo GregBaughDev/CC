@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DecompressionTest {
     String HEADER_FILE = "testHeader.txt";
+    String COMPRESSED_FILE = "testCompressed.txt";
 
     @Test
     void parseHeader() throws IOException {
@@ -29,7 +30,7 @@ class DecompressionTest {
         pw.println(HEADER_END);
         pw.close();
 
-        Decompression decompression = new Decompression(HEADER_FILE);
+        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
         Map<String, Integer> testMap = decompression.parseHeader();
         assertEquals(345, testMap.get("O"));
         assertEquals(123, testMap.get("g"));

@@ -5,6 +5,7 @@ import htree.HuffmanNode;
 import htree.TreeHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,11 +49,24 @@ public class CC3 {
         } else {
             fileToParse = args[1];
             headerFile = args[2];
-            Decompression decompression = new Decompression(headerFile);
+            Decompression decompression = new Decompression(fileToParse, headerFile);
             TreeHandler treeHandler = new TreeHandler();
             Map<String, Integer> mappedHeader = decompression.parseHeader();
             mappedHeader.forEach((k, v) -> treeHandler.addNodeItemToHeap(new HuffmanNode(k.toCharArray()[0], v)));
             HuffmanNode huffTree = treeHandler.createHuffTree();
+            List<String> stringList = decompression.parseFile();
+            stringList.forEach(it -> System.out.println("stringList: " + it));
+            StringBuilder hopefullyResult = new StringBuilder();
+            System.out.println("STRINGLIST: " + stringList);
+
+//            int currPos = 0;
+//            while (stringList.length() > 0) {
+//                HuffResult res = treeHandler.findChar(stringList.substring(currPos), huffTree);
+//                currPos = res.getPrefixIndex();
+//                stringList = stringList.substring(currPos);
+//                hopefullyResult.append(res.getElem());
+//            }
+//            System.out.println("HOPEFULLY::: " + hopefullyResult);
         }
 
         // TO DO:
