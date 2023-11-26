@@ -1,6 +1,5 @@
 package htree;
 
-import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class TreeHandler {
@@ -55,9 +54,9 @@ public class TreeHandler {
         return result;
     }
 
-    public HuffResult findChar(String prefixString, HuffmanNode node) {
+    public HuffResult findChar(String prefixString, int pfxIdx, HuffmanNode node) {
         HuffResult result = new HuffResult();
-        return getCharFromPrefix(prefixString, 0, node, result);
+        return getCharFromPrefix(prefixString, pfxIdx, node, result);
     }
 
     private HuffResult getCharFromPrefix(String prefixString, int prefixIndex, HuffmanNode node, HuffResult result) {
@@ -66,12 +65,12 @@ public class TreeHandler {
         }
 
         if (prefixIndex < prefixString.length() && result.getElem() == null) {
-            if (prefixString.charAt(prefixIndex) == '1') {
-                getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
-            }
-
             if (prefixString.charAt(prefixIndex) == '0') {
                 getCharFromPrefix(prefixString, prefixIndex + 1, node.getLeft(), result);
+            }
+
+            if (prefixString.charAt(prefixIndex) == '1') {
+                getCharFromPrefix(prefixString, prefixIndex + 1, node.getRight(), result);
             }
         }
         return result;

@@ -34,19 +34,19 @@ class TreeHandlerTest {
             HuffResult prefix = treeHandler.findElement(k.toCharArray()[0], huffTree);
             prefixCodeTable.put(k.toCharArray()[0], prefix.getPrefixCode());
         });
-        assertEquals('G', treeHandler.findChar(prefixCodeTable.get('G'), huffTree).getElem());
-        assertEquals('x', treeHandler.findChar(prefixCodeTable.get('x'), huffTree).getElem());
-        assertEquals('A', treeHandler.findChar(prefixCodeTable.get('A'), huffTree).getElem());
-        assertEquals(':', treeHandler.findChar(prefixCodeTable.get(':'), huffTree).getElem());
-        assertEquals('h', treeHandler.findChar(prefixCodeTable.get('h'), huffTree).getElem());
-        assertEquals('l', treeHandler.findChar(prefixCodeTable.get('l'), huffTree).getElem());
-        assertEquals('P', treeHandler.findChar(prefixCodeTable.get('P'), huffTree).getElem());
-        assertEquals('d', treeHandler.findChar(prefixCodeTable.get('d'), huffTree).getElem());
-        assertEquals('j', treeHandler.findChar(prefixCodeTable.get('j'), huffTree).getElem());
-        assertEquals('^', treeHandler.findChar(prefixCodeTable.get('^'), huffTree).getElem());
-        assertEquals('6', treeHandler.findChar(prefixCodeTable.get('6'), huffTree).getElem());
-        assertEquals('q', treeHandler.findChar(prefixCodeTable.get('q'), huffTree).getElem());
-        assertEquals('Q', treeHandler.findChar(prefixCodeTable.get('Q'), huffTree).getElem());
-        assertEquals('1', treeHandler.findChar(prefixCodeTable.get('1'), huffTree).getElem());
+        assertEquals('G', treeHandler.findChar(prefixCodeTable.get('G'), 0, huffTree).getElem());
+        assertEquals('x', treeHandler.findChar(prefixCodeTable.get('x'), 0, huffTree).getElem());
+        assertEquals('A', treeHandler.findChar(prefixCodeTable.get('A'), 0, huffTree).getElem());
+        assertEquals(':', treeHandler.findChar(prefixCodeTable.get(':'), 0, huffTree).getElem());
+        assertEquals('h', treeHandler.findChar(prefixCodeTable.get('h'), 0, huffTree).getElem());
+        assertEquals('l', treeHandler.findChar(prefixCodeTable.get('l'), 0, huffTree).getElem());
+        assertEquals('P', treeHandler.findChar(prefixCodeTable.get('P'), 0, huffTree).getElem());
+        assertEquals('d', treeHandler.findChar(prefixCodeTable.get('d'), 0, huffTree).getElem());
+        assertEquals('j', treeHandler.findChar(prefixCodeTable.get('j'), 0, huffTree).getElem());
+        assertEquals('^', treeHandler.findChar(prefixCodeTable.get('^'), 0, huffTree).getElem());
+        assertEquals('6', treeHandler.findChar(prefixCodeTable.get('6'), 0, huffTree).getElem());
+        assertEquals('q', treeHandler.findChar(prefixCodeTable.get('q'), 0, huffTree).getElem());
+        assertEquals('Q', treeHandler.findChar(prefixCodeTable.get('Q'), 0, huffTree).getElem());
+        assertEquals('1', treeHandler.findChar(prefixCodeTable.get('1'), 0, huffTree).getElem());
     }
 }

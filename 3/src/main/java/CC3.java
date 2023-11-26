@@ -54,22 +54,26 @@ public class CC3 {
             Map<String, Integer> mappedHeader = decompression.parseHeader();
             mappedHeader.forEach((k, v) -> treeHandler.addNodeItemToHeap(new HuffmanNode(k.toCharArray()[0], v)));
             HuffmanNode huffTree = treeHandler.createHuffTree();
-            List<String> stringList = decompression.parseFile();
-            stringList.forEach(it -> System.out.println("stringList: " + it));
-            StringBuilder hopefullyResult = new StringBuilder();
-            System.out.println("STRINGLIST: " + stringList);
 
-//            int currPos = 0;
-//            while (stringList.length() > 0) {
-//                HuffResult res = treeHandler.findChar(stringList.substring(currPos), huffTree);
-//                currPos = res.getPrefixIndex();
-//                stringList = stringList.substring(currPos);
-//                hopefullyResult.append(res.getElem());
-//            }
-//            System.out.println("HOPEFULLY::: " + hopefullyResult);
+            List<String> stringList = decompression.parseFile();
+            StringBuilder sb = new StringBuilder();
+            for (var i = 0; i < (long) stringList.size(); i++) {
+                System.out.println(stringList.get(i));
+                int idx = 0;
+                // below is mostly right, it's just idx will never be as long as the length
+                // need to find a way to break out the loop
+                while (idx < stringList.get(i).length()) {
+                    HuffResult res = treeHandler.findChar(stringList.get(i), idx, huffTree);
+                    sb.append(res.getElem());
+                    idx = res.getPrefixIndex();
+                }
+                sb.append("\n");
+            }
+            System.out.println("THE TEXT: " + sb);
         }
 
         // TO DO:
+        // Fix this loop and print to the file
         // Refactor
         // Types throughout - i.e the trees
     }

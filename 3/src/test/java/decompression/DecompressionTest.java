@@ -30,7 +30,7 @@ class DecompressionTest {
         pw.println(HEADER_END);
         pw.close();
 
-        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
+        Decompression decompression = new Decompression(COMPRESSED_FILE, HEADER_FILE);
         Map<String, Integer> testMap = decompression.parseHeader();
         assertEquals(345, testMap.get("O"));
         assertEquals(123, testMap.get("g"));
@@ -41,5 +41,21 @@ class DecompressionTest {
         assertEquals(12333, testMap.get("b"));
         assertNull(testMap.get(HEADER_END));
         Files.delete(Path.of(HEADER_FILE));
+    }
+
+    @Test
+    void reverseStringAndPadTest() {
+        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
+        String testBitString = "0010";
+        assertEquals("01000000", decompression.reverseBitsAndPad(testBitString));
+    }
+
+    @Test
+    void reverseStringAndPadTestException() {
+        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
+        String testBitString = "000011110";
+        String testBitStringEmpty = "";
+        assertThrows(RuntimeException.class, () -> decompression.reverseBitsAndPad(testBitString), "String must be 8 characters");
+        assertThrows(RuntimeException.class, () -> decompression.reverseBitsAndPad(testBitStringEmpty), "String must be 8 characters");
     }
 }

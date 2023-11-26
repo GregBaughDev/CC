@@ -1,7 +1,6 @@
 package compression;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.*;
 
 public class Compression {
@@ -38,9 +37,7 @@ public class Compression {
 
     private void writeFileHeader(Map<Character, Integer> prefixMap) throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter("H_" + outputFile)) {
-            prefixMap.forEach((k, v) -> {
-                writer.println(k + ":" + v);
-            });
+            prefixMap.forEach((k, v) -> writer.println(k + ":" + v));
             writer.println(HEADER_END);
         }
     }
@@ -106,16 +103,13 @@ public class Compression {
             throw new RuntimeException("String must be 8 characters");
         }
         char[] splitString = strToByte.toCharArray();
-        StringBuilder sb = new StringBuilder();
         BitSet bs = new BitSet(8);
         for (var i = 0; i < 8; i++) {
-            sb.append(splitString[i] == '1' ? '1' : '0');
             bs.set(i, splitString[i] == '1');
         }
         if (bs.isEmpty()) {
             return (byte) '0';
         }
-        System.out.println("THIS IS compre: " + (bs.toByteArray()[0] & (0xFF)));
         return bs.toByteArray()[0] & (0xFF);
     }
 }

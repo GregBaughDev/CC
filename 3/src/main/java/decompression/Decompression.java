@@ -34,25 +34,27 @@ public class Decompression {
             byte[] arr = s.readAllBytes();
             StringBuilder sb = new StringBuilder();
             for (byte b : arr) {
-                if (b == 10) {
+                if (b == 10) { // 10 = newline
                     stringList.add(sb.toString());
                     sb = new StringBuilder();
                     continue;
                 }
-                int eightBigInt = (0xFF) & b;
+                int eightBigInt = b & (0xFF);
                 String binString = Integer.toBinaryString(eightBigInt);
-                while (binString.length() != 8) {
-                    binString = "0" + binString;
-                }
-                stringList.add(binString);
+                sb.append(reverseBitsAndPad(binString));
             }
         }
-        return stringList;
+        return stringList.stream().filter(it -> it.length() > 0).toList();
     }
 
-    // TO DO ->
-    // Get the whole string and traverse the tree - return a character
-    // remove the already traversed digits - right now we are going back and forth for the string pos
-    // to rememedy this we need to cut? the string
-    // build up the text
+    public String reverseBitsAndPad(String bitString) {
+        if (bitString.length() > 8 || bitString.length() == 0) {
+            throw new RuntimeException("String must be between 1 and 8 characters");
+        }
+        StringBuilder sb = new StringBuilder(bitString).reverse();
+        while (sb.length() % 8 != 0) {
+            sb.append("0");
+        }
+        return sb.toString();
+    }
 }
