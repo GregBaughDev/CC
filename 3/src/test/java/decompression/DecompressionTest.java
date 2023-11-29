@@ -58,4 +58,13 @@ class DecompressionTest {
         assertThrows(RuntimeException.class, () -> decompression.reverseBitsAndPad(testBitString), "String must be 8 characters");
         assertThrows(RuntimeException.class, () -> decompression.reverseBitsAndPad(testBitStringEmpty), "String must be 8 characters");
     }
+
+    @Test
+    void removeEndBitPadTest() {
+        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
+        String testBitString = "00010101001010010000";
+        String testBitString2 = "0010101001010";
+        assertEquals("000101010010100", decompression.stringMinusEndBitPad(testBitString));
+        assertEquals("00101010010", decompression.stringMinusEndBitPad(testBitString2));
+    }
 }

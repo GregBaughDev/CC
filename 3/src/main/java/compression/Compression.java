@@ -48,7 +48,6 @@ public class Compression {
             FileOutputStream fos = new FileOutputStream(outputFile)
         ) {
             while (s.hasNext()) {
-                // Append the prefix strings to prefixLine
                 char[] tmp = s.nextLine().toCharArray();
                 if (tmp.length == 0) {
                     continue;
@@ -59,57 +58,29 @@ public class Compression {
                     prefixLine.append(prefixMap.get(c));
                 }
 
-                List<String> byteStrings = getStringByteList(prefixLine);
-                byteStrings.forEach(it -> {
+                byte[] stringBytes = createByteArray(prefixLine.toString());
+                for (byte b : stringBytes) {
                     try {
-                        if (it.length() % 8 == 0) {
-                            fos.write(createByte(it));
-                        } else {
-                            StringBuilder tmpStr = new StringBuilder(it);
-                            while (tmpStr.length() % 8 != 0) {
-                                tmpStr.append('0');
-                            }
-                            fos.write(createByte(tmpStr.toString()));
-                        }
+                        fos.write(b);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                });
+                }
                 fos.write('\n');
                 fos.flush();
             }
         }
     }
 
-    public List<String> getStringByteList(StringBuilder prefixLine) {
-        List<String> byteStrings = new ArrayList<>();
-        StringBuilder bsBuilder = new StringBuilder();
-        for (var i = 1; i < prefixLine.length() + 1; i++) {
-            bsBuilder.append(prefixLine.charAt(i - 1));
-            if (i == prefixLine.length()) {
-                byteStrings.add(bsBuilder.toString());
-                break;
-            }
-            if (i % 8 == 0) {
-                byteStrings.add(bsBuilder.toString());
-                bsBuilder = new StringBuilder();
-            }
-        }
-        return byteStrings;
-    }
-
-    private int createByte(String strToByte) {
-        if (strToByte.length() != 8) {
-            throw new RuntimeException("String must be 8 characters");
-        }
-        char[] splitString = strToByte.toCharArray();
-        BitSet bs = new BitSet(8);
-        for (var i = 0; i < 8; i++) {
+    private byte[] createByteArray(String prefixString) {
+        prefixString += "1"; // Add additional 1 bit to maintain accuracy
+        char[] splitString = prefixString.toCharArray();
+        BitSet bs = new BitSet(splitString.length);
+        StringBuilder test = new StringBuilder();
+        for (var i = 0; i < splitString.length; i++) {
+            test.append(splitString[i] == '1' ? '1' : '0');
             bs.set(i, splitString[i] == '1');
         }
-        if (bs.isEmpty()) {
-            return (byte) '0';
-        }
-        return bs.toByteArray()[0] & (0xFF);
+        return bs.toByteArray();
     }
 }

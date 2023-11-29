@@ -44,7 +44,11 @@ public class Decompression {
                 sb.append(reverseBitsAndPad(binString));
             }
         }
-        return stringList.stream().filter(it -> it.length() > 0).toList();
+        return stringList
+                .stream()
+                .filter(it -> it.length() > 0)
+                .map(this::stringMinusEndBitPad)
+                .toList();
     }
 
     public String reverseBitsAndPad(String bitString) {
@@ -56,5 +60,14 @@ public class Decompression {
             sb.append("0");
         }
         return sb.toString();
+    }
+
+    public String stringMinusEndBitPad(String bitString) {
+        for(var i = bitString.length() - 1; i >= 0; i--) {
+            if (bitString.charAt(i) == '1') {
+                return bitString.substring(0, i);
+            }
+        }
+        throw new RuntimeException("String invalid");
     }
 }
