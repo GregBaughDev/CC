@@ -4,6 +4,7 @@ import htree.HuffResult;
 import htree.HuffmanNode;
 import htree.TreeHandler;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,25 +55,25 @@ public class CC3 {
             Map<String, Integer> mappedHeader = decompression.parseHeader();
             mappedHeader.forEach((k, v) -> treeHandler.addNodeItemToHeap(new HuffmanNode(k.toCharArray()[0], v)));
             HuffmanNode huffTree = treeHandler.createHuffTree();
-
             List<String> stringList = decompression.parseFile();
-            StringBuilder sb = new StringBuilder();
-            for (var i = 0; i < (long) stringList.size(); i++) {
-                int idx = 0;
-                while (idx < stringList.get(i).length()) {
-                    HuffResult res = treeHandler.findChar(stringList.get(i), idx, huffTree);
-                    if (res.getElem() == null) {
-                        break;
+
+            try (PrintWriter pw = new PrintWriter("testWrite.txt")) {
+                for (var i = 0; i < (long) stringList.size(); i++) {
+                    int idx = 0;
+                    while (idx < stringList.get(i).length()) {
+                        HuffResult res = treeHandler.findChar(stringList.get(i), idx, huffTree);
+                        if (res.getElem() == null) {
+                            break;
+                        }
+                        pw.write(res.getElem());
+                        idx = res.getPrefixIndex();
                     }
-                    sb.append(res.getElem());
-                    idx = res.getPrefixIndex();
+                    pw.write("\n");
                 }
-                sb.append("\n");
             }
-            System.out.println(sb);
         }
         // TO DO:
-        // Fix this loop and print to the file
+        // Sort out the newlines?!?!
         // Refactor
         // Types throughout - i.e the trees
     }
