@@ -22,6 +22,10 @@ public class Decompression {
                 if (inputLine.equalsIgnoreCase(HEADER_END)) {
                     break;
                 }
+                if (inputLine.startsWith("\\n")) {
+                    headerMap.put("\n", Integer.parseInt(inputLine.substring(3)));
+                    continue;
+                }
                 headerMap.put(inputLine.substring(0, 1), Integer.parseInt(inputLine.substring(2)));
             }
         }

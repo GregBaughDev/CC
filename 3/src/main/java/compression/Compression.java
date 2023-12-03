@@ -25,6 +25,12 @@ public class Compression {
                         charResults.put(c, 1);
                     }
                 }
+                char nl = '\n';
+                if (charResults.containsKey(nl)) {
+                    charResults.put(nl, charResults.get(nl) + 1);
+                } else {
+                    charResults.put(nl, 1);
+                }
             }
         }
         return charResults;
@@ -37,7 +43,9 @@ public class Compression {
 
     private void writeFileHeader(Map<Character, Integer> prefixMap) throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter("H_" + outputFile)) {
-            prefixMap.forEach((k, v) -> writer.println(k + ":" + v));
+            prefixMap.forEach((k, v) -> {
+                if (k == '\n') writer.println("\\n:" + v); else writer.println(k + ":" + v);
+            });
             writer.println(HEADER_END);
         }
     }
@@ -50,6 +58,12 @@ public class Compression {
             while (s.hasNext()) {
                 char[] tmp = s.nextLine().toCharArray();
                 if (tmp.length == 0) {
+                    byte[] newLineByte = createByteArray(prefixMap.get('\n'));
+                    for (byte b : newLineByte) {
+                        fos.write(b);
+                    }
+                    fos.write('\n');
+                    fos.flush();
                     continue;
                 }
 
@@ -76,9 +90,7 @@ public class Compression {
         prefixString += "1"; // Add additional 1 bit to maintain accuracy
         char[] splitString = prefixString.toCharArray();
         BitSet bs = new BitSet(splitString.length);
-        StringBuilder test = new StringBuilder();
         for (var i = 0; i < splitString.length; i++) {
-            test.append(splitString[i] == '1' ? '1' : '0');
             bs.set(i, splitString[i] == '1');
         }
         return bs.toByteArray();

@@ -62,18 +62,19 @@ public class CC3 {
                     int idx = 0;
                     while (idx < stringList.get(i).length()) {
                         HuffResult res = treeHandler.findChar(stringList.get(i), idx, huffTree);
-                        if (res.getElem() == null) {
+                        if (res.getElem() == null || res.getElem() == '\n') {
                             break;
                         }
                         pw.write(res.getElem());
                         idx = res.getPrefixIndex();
                     }
-                    pw.write("\n");
+                    if (i != stringList.size() - 1) {
+                        pw.write("\n");
+                    }
                 }
             }
         }
         // TO DO:
-        // Sort out the newlines?!?!
         // Refactor
         // Types throughout - i.e the trees
     }
