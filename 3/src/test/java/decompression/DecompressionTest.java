@@ -67,4 +67,11 @@ class DecompressionTest {
         assertEquals("000101010010100", decompression.stringMinusEndBitPad(testBitString));
         assertEquals("00101010010", decompression.stringMinusEndBitPad(testBitString2));
     }
+
+    @Test
+    void shouldRemoveTheLastOneFromTheString() {
+        Decompression decompression = new Decompression(HEADER_FILE, COMPRESSED_FILE);
+        String testBitString = "0101001011";
+        assertEquals("010100101", decompression.stringMinusEndBitPad(testBitString));
+    }
 }
