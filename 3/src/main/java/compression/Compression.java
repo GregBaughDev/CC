@@ -25,11 +25,11 @@ public class Compression {
                         charResults.put(c, 1);
                     }
                 }
-                char nl = '\n';
-                if (charResults.containsKey(nl)) {
-                    charResults.put(nl, charResults.get(nl) + 1);
+                char nL = '\n';
+                if (charResults.containsKey(nL)) {
+                    charResults.put(nL, charResults.get(nL) + 1);
                 } else {
-                    charResults.put(nl, 1);
+                    charResults.put(nL, 1);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class Compression {
     private byte[] createByteArray(String prefixString) {
         prefixString += "1"; // Add additional 1 bit to maintain accuracy
         char[] splitString = prefixString.toCharArray();
-        BitSet bs = new BitSet(splitString.length);
+        BitSet bs = new BitSet();
         for (var i = 0; i < splitString.length; i++) {
             bs.set(i, splitString[i] == '1');
         }

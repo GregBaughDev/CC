@@ -16,20 +16,12 @@ enum Mode {
 
 public class CC3 {
     public static void main (String[] args) throws Exception {
-//        if (args.length == 0) {
-//            throw new Exception("File name to be parsed must be supplied");
-//        }
-//        if (args.length == 1) {
-//            throw new Exception("Output file name must be supplied");
-//        }
-//        if (args.length > 3) {
-//            throw new Exception("Too many arguments supplied");
-//        }
+        handleArgs(args);
         Mode flag = Objects.equals(args[0], "-e") ? Mode.ENCODE : Mode.DECODE;
 
         String fileToParse;
         String outputFile;
-        String headerFile;
+        String decompressedFile;
 
         if (flag == Mode.ENCODE) {
             fileToParse = args[1];
@@ -49,7 +41,8 @@ public class CC3 {
             compression.writeToOutputFile(mappedResults, prefixCodeTable);
         } else {
             fileToParse = args[1];
-            headerFile = args[2];
+            decompressedFile = args[2];
+            String headerFile = "H_" + fileToParse;
             Decompression decompression = new Decompression(fileToParse, headerFile);
             TreeHandler treeHandler = new TreeHandler();
             Map<String, Integer> mappedHeader = decompression.parseHeader();
@@ -57,7 +50,7 @@ public class CC3 {
             HuffmanNode huffTree = treeHandler.createHuffTree();
             List<String> stringList = decompression.parseFile();
 
-            try (PrintWriter pw = new PrintWriter("testWrite.txt")) {
+            try (PrintWriter pw = new PrintWriter(decompressedFile)) {
                 for (var i = 0; i < (long) stringList.size(); i++) {
                     int idx = 0;
                     while (idx < stringList.get(i).length()) {
@@ -74,8 +67,17 @@ public class CC3 {
                 }
             }
         }
-        // TO DO:
-        // Refactor
-        // Types throughout - i.e the trees
+    }
+
+    private static void handleArgs(String[] args) throws Exception {
+        if (args.length == 0) {
+            throw new Exception("Mode and file names must be supplied");
+        }
+        if (args.length < 3) {
+            throw new Exception("File names must be supplied");
+        }
+        if (args.length > 3) {
+            throw new Exception("Too many arguments supplied");
+        }
     }
 }
