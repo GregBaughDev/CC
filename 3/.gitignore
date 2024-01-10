@@ -7,3 +7,5 @@ gradlew.bat
 settings.gradle
 *.txt
 build
+/bin
+.DS_Store
