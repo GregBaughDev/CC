@@ -1,0 +1,6 @@
+.vscode
+*.csv
+*.tsv
+4
+4.dSYM
+.DS_Store
