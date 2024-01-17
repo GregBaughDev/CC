@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
         printf("Unable to allocate memory for fileName");
         exit(EXIT_FAILURE);
     }
-
     fileName = argv[2];
 
     if (!(inputFile = fopen(fileName, "r"))) {
@@ -54,6 +53,8 @@ int main(int argc, char *argv[]) {
     printf("buffer: %s\n", buffer);
     printf("Made it this far!\n");
 
-    // close file and free memory
+    free(buffer);
+    fclose(inputFile);
+
     return 0;
 }
