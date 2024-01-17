@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
     struct  stat fileInfo;
     char    *buffer;
     // curr state
-    // use fileSize to allocate space in buffer for file content
 
     if (argc < 3) {
         printf("Usage: -f1,2 filename");
@@ -27,7 +26,7 @@ int main(int argc, char *argv[]) {
     opt = getopt(argc, argv, OPTSTR); // optarg gives us the opt
     printf("%s is %lu length\n", argv[2], strlen(argv[2] + 1));
 
-    fileName = (char *) malloc(strlen(argv[2]));
+    fileName = malloc(strlen(argv[2]));
     if (fileName == NULL) {
         printf("Unable to allocate memory for fileName");
         exit(EXIT_FAILURE);
@@ -43,15 +42,15 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    buffer = (char *) malloc(sizeof(char) * fileInfo.st_size);
+    buffer = malloc(1 * fileInfo.st_size);
     if (buffer == NULL) {
         printf("Unable to allocate buffer memory");
         exit(EXIT_FAILURE);
     }
 
-    fread(buffer, sizeof(char), fileInfo.st_size, inputFile);
-    printf("buffer: %s\n", buffer);
-    printf("Made it this far!\n");
+    fread(buffer, 1, fileInfo.st_size, inputFile);
+    printf("buffer:\n %s\n", buffer);
+    printf("Made it this far without a seg fault!\n");
 
     free(buffer);
     fclose(inputFile);
