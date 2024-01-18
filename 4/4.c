@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     struct  stat fileInfo;
     char    *buffer;
     // curr state
+    // next time - print second field from -f2 from sample.tsv
 
     if (argc < 3) {
         printf("Usage: -f1,2 filename");
@@ -49,7 +50,21 @@ int main(int argc, char *argv[]) {
     }
 
     fread(buffer, 1, fileInfo.st_size, inputFile);
-    printf("buffer:\n %s\n", buffer);
+    printf("buffer:\n%s\n", buffer);
+
+    // could use a int var which compares agains the optarg
+    // reset it each time we hit newline
+    // increase intvar when we hit tabchar
+    // concat the string until you reach a tab char
+    // add the string to a results buffer
+    // realloc the size of the results buffer each time we add the concat string
+
+    int tabChar = 0;
+    char concat[] = "";
+    for (int i = 0; i < strlen(buffer); i++) {
+        printf("%i: %i\n", i, (int) buffer[i]);
+    }
+
     printf("Made it this far without a seg fault!\n");
 
     free(buffer);
