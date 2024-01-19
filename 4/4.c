@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
     fileName = malloc(strlen(argv[2]));
     if (fileName == NULL) {
-        printf("Unable to allocate memory for fileName");
+        puts("Unable to allocate memory for fileName");
         exit(EXIT_FAILURE);
     }
     fileName = argv[2];
@@ -45,24 +45,46 @@ int main(int argc, char *argv[]) {
 
     buffer = malloc(1 * fileInfo.st_size);
     if (buffer == NULL) {
-        printf("Unable to allocate buffer memory");
+        puts("Unable to allocate buffer memory");
         exit(EXIT_FAILURE);
     }
 
     fread(buffer, 1, fileInfo.st_size, inputFile);
-    printf("buffer:\n%s\n", buffer);
-
     // could use a int var which compares agains the optarg
     // reset it each time we hit newline
     // increase intvar when we hit tabchar
     // concat the string until you reach a tab char
-    // add the string to a results buffer
-    // realloc the size of the results buffer each time we add the concat string
-
-    int tabChar = 0;
-    char concat[] = "";
+    
+    int tempOptarg = 2;
+    int tabChar = 1;
+    char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
-        printf("%i: %i\n", i, (int) buffer[i]);
+        printf("%i: %c\n", i, buffer[i]);
+        if (buffer[i] == TAB) {
+            tabChar++;
+        }
+
+        if (buffer[i] == NEWLINE) {
+            puts(concatString);
+            tabChar = 1;
+            if ((realloc(concatString, 0)) == NULL) {
+                puts("concatString realloc failed");
+                exit(EXIT_FAILURE);
+            }
+            concatString = NULL;
+        }
+
+        if (tabChar == tempOptarg) {
+            puts("gets here tab == temp");
+            // current state - this realloc is not working
+            concatString = realloc(concatString, strlen(concatString) + 1);
+            if (concatString == NULL)  {
+                puts("concatString realloc failed");
+                exit(EXIT_FAILURE);
+            }
+            puts("gets here realloc");
+            strncat(concatString, buffer[i], 1);
+        }
     }
 
     printf("Made it this far without a seg fault!\n");
