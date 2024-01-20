@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
     }
 
     opt = getopt(argc, argv, OPTSTR); // optarg gives us the opt
-    printf("%s is %lu length\n", argv[2], strlen(argv[2] + 1));
 
     fileName = malloc(strlen(argv[2]));
     if (fileName == NULL) {
