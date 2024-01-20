@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     struct  stat fileInfo;
     char    *buffer;
     // curr state
-    // next time - print second field from -f2 from sample.tsv
+    // not printing last line and also printing the tab
 
     if (argc < 3) {
         printf("Usage: -f1,2 filename");
@@ -59,7 +59,6 @@ int main(int argc, char *argv[]) {
     int tabChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
-        printf("%i: %c\n", i, buffer[i]);
         if (buffer[i] == TAB) {
             tabChar++;
         }
@@ -67,7 +66,7 @@ int main(int argc, char *argv[]) {
         if (buffer[i] == NEWLINE) {
             puts(concatString);
             tabChar = 1;
-            if ((realloc(concatString, 0)) == NULL) {
+            if ((realloc(concatString, 1)) == NULL) {
                 puts("concatString realloc failed");
                 exit(EXIT_FAILURE);
             }
@@ -75,15 +74,17 @@ int main(int argc, char *argv[]) {
         }
 
         if (tabChar == tempOptarg) {
-            puts("gets here tab == temp");
-            // current state - this realloc is not working
-            concatString = realloc(concatString, strlen(concatString) + 1);
+            if (concatString == NULL) {
+                concatString = malloc(2);
+            } else {
+                concatString = realloc(concatString, strlen(concatString) + 1);
+            }
             if (concatString == NULL)  {
                 puts("concatString realloc failed");
                 exit(EXIT_FAILURE);
             }
-            puts("gets here realloc");
-            strncat(concatString, buffer[i], 1);
+            concatString[strlen(concatString)] = buffer[i];
+            concatString[strlen(concatString) + 1] = '\0';
         }
     }
 
