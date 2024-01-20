@@ -5,10 +5,7 @@
 #include <sys/stat.h>
 #include <string.h>
 
-// 1: open the provided tab separated file and print out
-// the second field from each line
-// will need -> field value, file name from stdin
-// 1a. let's print the file to stdout first off
+// 2: allow user to set the delim char
 
 int main(int argc, char *argv[]) {
     int     opt;
@@ -16,8 +13,6 @@ int main(int argc, char *argv[]) {
     FILE    *inputFile;
     struct  stat fileInfo;
     char    *buffer;
-    // curr state
-    // not printing last line and also printing the tab
 
     if (argc < 3) {
         printf("Usage: -f1,2 filename");
@@ -43,24 +38,22 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    buffer = malloc(1 * fileInfo.st_size);
+    buffer = malloc(fileInfo.st_size);
     if (buffer == NULL) {
         puts("Unable to allocate buffer memory");
         exit(EXIT_FAILURE);
     }
 
-    fread(buffer, 1, fileInfo.st_size, inputFile);
-    // could use a int var which compares agains the optarg
-    // reset it each time we hit newline
-    // increase intvar when we hit tabchar
-    // concat the string until you reach a tab char
-    
-    int tempOptarg = 2;
+    fread(buffer, 1, fileInfo.st_size, inputFile); // need to handle this for error/eof
+    fclose(inputFile);
+
+    int tempOptarg = 2; // replace this with optarg - will also need to handle gtr than fields error
     int tabChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
         if (buffer[i] == TAB) {
             tabChar++;
+            continue;
         }
 
         if (buffer[i] == NEWLINE) {
@@ -71,6 +64,12 @@ int main(int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
             concatString = NULL;
+            continue;
+        }
+
+        if (i == strlen(buffer) - 1) {
+            puts(concatString);
+            break;
         }
 
         if (tabChar == tempOptarg) {
@@ -88,10 +87,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("Made it this far without a seg fault!\n");
-
+    free(concatString);
     free(buffer);
-    fclose(inputFile);
 
+    printf("Made it this far without a seg fault!\n");
     return 0;
 }
