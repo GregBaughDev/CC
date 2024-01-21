@@ -9,6 +9,8 @@
 
 int main(int argc, char *argv[]) {
     int     opt;
+    char    *fieldOpt = NULL;
+    char    *delimOpt = NULL;
     char    *fileName;
     FILE    *inputFile;
     struct  stat fileInfo;
@@ -19,14 +21,32 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    opt = getopt(argc, argv, OPTSTR); // optarg gives us the opt
-
-    fileName = malloc(strlen(argv[2]));
+    while ((opt = getopt(argc, argv, OPTSTR)) != -1) {
+        switch (opt) {
+            case 'f':
+                fieldOpt = optarg;
+                printf("fieldOpt %s\n", fieldOpt);
+                break;
+            case 'd':
+                delimOpt = optarg;
+                printf("delimOpt %s\n", delimOpt);
+            default:
+                break;
+        }
+    }
+    // curr state: currently relying on delimOpt to come from the makefile
+    // if it's not provided. This is not great in case someone runs it
+    // without make. So need an extra guard to check if delimOpt is NULL
+    // then set it to TAB
+    // then...
+    // need to do the part where we stop hardcoding tabchar and tempoptarg
+    
+    fileName = malloc(strlen(argv[3]));
     if (fileName == NULL) {
         puts("Unable to allocate memory for fileName");
         exit(EXIT_FAILURE);
     }
-    fileName = argv[2];
+    fileName = argv[3];
 
     if (!(inputFile = fopen(fileName, "r"))) {
         perror(ERR_FOPEN_INPUT);
