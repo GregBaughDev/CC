@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
     char    *fieldOpt = NULL;
     char    *delimOpt = NULL;
     char    *fileName;
+    int     argFilePos = 3;
     FILE    *inputFile;
     struct  stat fileInfo;
     char    *buffer;
@@ -34,19 +35,20 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
-    // curr state: currently relying on delimOpt to come from the makefile
-    // if it's not provided. This is not great in case someone runs it
-    // without make. So need an extra guard to check if delimOpt is NULL
-    // then set it to TAB
-    // then...
+    // curr state: 
     // need to do the part where we stop hardcoding tabchar and tempoptarg
     
-    fileName = malloc(strlen(argv[3]));
+    if (delimOpt == NULL) { // test w/out make
+        delimOpt = "\t";
+        argFilePos = 2;
+    }
+
+    fileName = malloc(strlen(argv[argFilePos]));
     if (fileName == NULL) {
         puts("Unable to allocate memory for fileName");
         exit(EXIT_FAILURE);
     }
-    fileName = argv[3];
+    fileName = argv[argFilePos];
 
     if (!(inputFile = fopen(fileName, "r"))) {
         perror(ERR_FOPEN_INPUT);
