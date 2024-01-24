@@ -7,6 +7,9 @@
 
 // 2: allow user to set the delim char
 
+// additional todos:
+// loop over the fields to check number of fields is < 0 && == fieldNum
+
 int main(int argc, char *argv[]) {
     int     opt;
     char    *fieldOpt = NULL;
@@ -36,7 +39,7 @@ int main(int argc, char *argv[]) {
         }
     }
     // curr state: 
-    // need to do the part where we stop hardcoding tabchar and tempoptarg
+    // need to do the part where we accept the delim char
     
     if (delimOpt == NULL) { // test w/out make
         delimOpt = "\t";
@@ -68,11 +71,11 @@ int main(int argc, char *argv[]) {
     fread(buffer, 1, fileInfo.st_size, inputFile); // need to handle this for error/eof
     fclose(inputFile);
 
-    int tempOptarg = 2; // replace this with optarg - will also need to handle gtr than fields error
+    int tempOptarg = (int) strtol(fieldOpt, NULL, 10); // replace this with optarg - will also need to handle gtr than fields error
     int tabChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
-        if (buffer[i] == TAB) {
+        if ((char) buffer[i] == '\t') {
             tabChar++;
             continue;
         }
@@ -88,11 +91,6 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        if (i == strlen(buffer) - 1) {
-            puts(concatString);
-            break;
-        }
-
         if (tabChar == tempOptarg) {
             if (concatString == NULL) {
                 concatString = malloc(2);
@@ -105,6 +103,11 @@ int main(int argc, char *argv[]) {
             }
             concatString[strlen(concatString)] = buffer[i];
             concatString[strlen(concatString) + 1] = '\0';
+        }
+
+        if (i == strlen(buffer) - 1) {
+            puts(concatString);
+            break;
         }
     }
 
