@@ -13,7 +13,7 @@
 int main(int argc, char *argv[]) {
     int     opt;
     char    *fieldOpt = NULL;
-    char    *delimOpt = NULL;
+    int     delimOpt = TAB;
     char    *fileName;
     int     argFilePos = 3;
     FILE    *inputFile;
@@ -29,20 +29,17 @@ int main(int argc, char *argv[]) {
         switch (opt) {
             case 'f':
                 fieldOpt = optarg;
-                printf("fieldOpt %s\n", fieldOpt);
                 break;
             case 'd':
-                delimOpt = optarg;
-                printf("delimOpt %s\n", delimOpt);
+                delimOpt = (int) optarg[0];
             default:
                 break;
         }
     }
     // curr state: 
-    // need to do the part where we accept the delim char
+    // should start splitting things into fn's
     
-    if (delimOpt == NULL) { // test w/out make
-        delimOpt = "\t";
+    if (argc == 3) { // test w/out make
         argFilePos = 2;
     }
 
@@ -75,7 +72,7 @@ int main(int argc, char *argv[]) {
     int tabChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
-        if ((char) buffer[i] == '\t') {
+        if (buffer[i] == delimOpt) {
             tabChar++;
             continue;
         }
