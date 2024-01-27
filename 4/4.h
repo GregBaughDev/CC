@@ -3,3 +3,5 @@
 #define EXIT_FAILURE 1
 #define TAB 9
 #define NEWLINE 10
+
+int fieldsToArray(char *fields, int *array);

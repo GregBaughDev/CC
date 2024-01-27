@@ -5,14 +5,32 @@
 #include <sys/stat.h>
 #include <string.h>
 
-// 2: allow user to set the delim char
+// 3: allow list of fields to be passed in
+// i.e -f"1 2" or -f1,2
+// done but need to put delimopt between the output!
 
 // additional todos:
 // loop over the fields to check number of fields is < 0 && == fieldNum
 
+int fieldsToArray(char *fields, int *array) {
+    int arrPos = 0;
+    for (int i = 0; i < strlen(fields); i++) {
+        int fieldChar = (int) fields[i];
+        if (fieldChar >= 48 && fieldChar <= 57) {
+            array[arrPos] = (int) strtol(&fields[i], NULL, 10);
+            arrPos++;
+        }
+    }
+    return arrPos;
+}
+
 int main(int argc, char *argv[]) {
     int     opt;
+    // deprecate the below
     char    *fieldOpt = NULL;
+    // maybe dynamically do the array
+    int     fieldArr[5];
+    int     fieldArrLen;    
     int     delimOpt = TAB;
     char    *fileName;
     int     argFilePos = 3;
@@ -29,6 +47,7 @@ int main(int argc, char *argv[]) {
         switch (opt) {
             case 'f':
                 fieldOpt = optarg;
+                fieldArrLen = fieldsToArray(optarg, fieldArr);
                 break;
             case 'd':
                 delimOpt = (int) optarg[0];
@@ -68,18 +87,18 @@ int main(int argc, char *argv[]) {
     fread(buffer, 1, fileInfo.st_size, inputFile); // need to handle this for error/eof
     fclose(inputFile);
 
-    int tempOptarg = (int) strtol(fieldOpt, NULL, 10); // replace this with optarg - will also need to handle gtr than fields error
-    int tabChar = 1;
+    int fieldArg = (int) strtol(fieldOpt, NULL, 10); // replace this with optarg - will also need to handle gtr than fields error
+    int argChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
         if (buffer[i] == delimOpt) {
-            tabChar++;
+            argChar++;
             continue;
         }
 
         if (buffer[i] == NEWLINE) {
             puts(concatString);
-            tabChar = 1;
+            argChar = 1;
             if ((realloc(concatString, 1)) == NULL) {
                 puts("concatString realloc failed");
                 exit(EXIT_FAILURE);
@@ -88,18 +107,20 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        if (tabChar == tempOptarg) {
-            if (concatString == NULL) {
-                concatString = malloc(2);
-            } else {
-                concatString = realloc(concatString, strlen(concatString) + 1);
+        for (int j = 0; j < fieldArrLen; j++) {
+            if (argChar == fieldArr[j]) {
+                if (concatString == NULL) {
+                    concatString = malloc(2);
+                } else {
+                    concatString = realloc(concatString, strlen(concatString) + 1);
+                }
+                if (concatString == NULL)  {
+                    puts("concatString realloc failed");
+                    exit(EXIT_FAILURE);
+                }
+                concatString[strlen(concatString)] = buffer[i];
+                concatString[strlen(concatString) + 1] = '\0';
             }
-            if (concatString == NULL)  {
-                puts("concatString realloc failed");
-                exit(EXIT_FAILURE);
-            }
-            concatString[strlen(concatString)] = buffer[i];
-            concatString[strlen(concatString) + 1] = '\0';
         }
 
         if (i == strlen(buffer) - 1) {
