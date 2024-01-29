@@ -6,8 +6,7 @@
 #include <string.h>
 
 // 3: allow list of fields to be passed in
-// i.e -f"1 2" or -f1,2
-// done but need to put delimopt between the output!
+// now just need to not print the last delim char!
 
 // additional todos:
 // loop over the fields to check number of fields is < 0 && == fieldNum
@@ -87,15 +86,9 @@ int main(int argc, char *argv[]) {
     fread(buffer, 1, fileInfo.st_size, inputFile); // need to handle this for error/eof
     fclose(inputFile);
 
-    int fieldArg = (int) strtol(fieldOpt, NULL, 10); // replace this with optarg - will also need to handle gtr than fields error
     int argChar = 1;
     char *concatString = NULL;
     for (int i = 0; i < strlen(buffer); i++) {
-        if (buffer[i] == delimOpt) {
-            argChar++;
-            continue;
-        }
-
         if (buffer[i] == NEWLINE) {
             puts(concatString);
             argChar = 1;
@@ -121,6 +114,11 @@ int main(int argc, char *argv[]) {
                 concatString[strlen(concatString)] = buffer[i];
                 concatString[strlen(concatString) + 1] = '\0';
             }
+        }
+
+        if (buffer[i] == delimOpt) {
+            argChar++;
+            continue;
         }
 
         if (i == strlen(buffer) - 1) {
