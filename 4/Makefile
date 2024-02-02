@@ -1,6 +1,6 @@
 compile:
 	@echo "compile"
-	@gcc 4.c -o 4
+	@gcc 4.c functions.c -o 4
 
 clean:
 	@echo "clean"

@@ -5,29 +5,8 @@
 #include <sys/stat.h>
 #include <string.h>
 
-// 3: allow list of fields to be passed in
-// now just need to not print the last delim char!
-
-// additional todos:
-// loop over the fields to check number of fields is < 0 && == fieldNum
-
-int fieldsToArray(char *fields, int *array) {
-    int arrPos = 0;
-    for (int i = 0; i < strlen(fields); i++) {
-        int fieldChar = (int) fields[i];
-        if (fieldChar >= 48 && fieldChar <= 57) {
-            array[arrPos] = (int) strtol(&fields[i], NULL, 10);
-            arrPos++;
-        }
-    }
-    return arrPos;
-}
-
 int main(int argc, char *argv[]) {
     int     opt;
-    // deprecate the below
-    char    *fieldOpt = NULL;
-    // maybe dynamically do the array
     int     fieldArr[5];
     int     fieldArrLen;    
     int     delimOpt = TAB;
@@ -38,14 +17,13 @@ int main(int argc, char *argv[]) {
     char    *buffer;
 
     if (argc < 3) {
-        printf("Usage: -f1,2 filename");
+        printf("Usage: -f1,2 -d, filename");
         exit(EXIT_FAILURE);
     }
 
     while ((opt = getopt(argc, argv, OPTSTR)) != -1) {
         switch (opt) {
             case 'f':
-                fieldOpt = optarg;
                 fieldArrLen = fieldsToArray(optarg, fieldArr);
                 break;
             case 'd':
@@ -54,10 +32,8 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
-    // curr state: 
-    // should start splitting things into fn's
     
-    if (argc == 3) { // test w/out make
+    if (argc == 3) {
         argFilePos = 2;
     }
 
@@ -130,6 +106,5 @@ int main(int argc, char *argv[]) {
     free(concatString);
     free(buffer);
 
-    printf("Made it this far without a seg fault!\n");
     return 0;
 }
