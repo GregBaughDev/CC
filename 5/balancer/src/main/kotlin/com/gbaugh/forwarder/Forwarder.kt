@@ -9,24 +9,36 @@ import kotlinx.coroutines.delay
 
 class Forwarder(
     private val client: HttpClient = HttpClient(CIO), // todo: Not sure if we need multiple servers for making concurrent requests
-    private val ports: List<Int> = listOf(8081, 8082, 8083, 8084), // todo: get this from shared config
-    private val servers: MutableList<Server> = mutableListOf()
+    ports: List<Int> = listOf(8081, 8082, 8083, 8084), // todo: get this from shared config
+    private val healthCheckTimeout: Long = 10000
 ) {
+    private val servers: MutableList<Server> = mutableListOf()
+    private var currServer = -1
+
     init {
         ports.forEach {
             servers.add(Server(it))
         }
     }
 
-    private var currServer = 0
+    // curr state
+    // do the parallel requests in the challenge
+    // handle diff http methods
+    // add auth so only the balancer can call the servers
+    // todos
 
-    private fun getServer(): Int {
-        // HERE -> Need to only return port if it's healthy
+    private tailrec fun getServer(): Int {
         currServer++
+
         if (currServer == servers.count()) {
-            currServer = 0;
+            currServer = 0
         }
-        return ports[currServer]
+
+        return if (servers[currServer].healthy) {
+            servers[currServer].port
+        } else {
+            getServer()
+        }
     }
 
     suspend fun sendRequest(): HttpResponse {
@@ -34,19 +46,19 @@ class Forwarder(
     }
 
     suspend fun healthCheck() {
-        // currstate - need to run this with a timeout
-        // need to also not send requests in the health fails
-        // but keep pinging to check when it's healthy again
         while (true) {
-            delay(10000) // pass through the time to constructor
+            delay(healthCheckTimeout)
             servers.forEach {
-                client.get("http://localhost:${it.port}/ping").let { res ->
-                    if (res.status.isSuccess()) {
-                        println("Server: ${it.port} is healthy")
-                    } else {
-                        println("Server: ${it.port} is down")
-                        it.healthy = false
+                try {
+                    client.get("http://localhost:${it.port}/ping").let { res ->
+                        if (res.status.isSuccess()) {
+                            println("Server: ${it.port} is healthy")
+                            it.healthy = true
+                        }
                     }
+                } catch (e: Exception) {
+                    println("Server: ${it.port} is down")
+                    it.healthy = false
                 }
             }
         }
