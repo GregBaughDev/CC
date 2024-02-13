@@ -14,7 +14,7 @@ fun Application.configureRouting(forwarder: Forwarder) {
             runBlocking {
                 forwarder.sendRequest().let {
                     if (it.status.isSuccess()) {
-                        call.respond(HttpStatusCode.OK, it.body<String>())
+                        call.respondText(it.body(), ContentType.Text.Html)
                     } else {
                         call.respond(HttpStatusCode.BadRequest)
                     }
