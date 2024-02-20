@@ -1,6 +1,7 @@
 package com.gbaugh
 
 import com.gbaugh.plugins.configureRouting
+import com.gbaugh.plugins.configureSecurity
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -19,5 +20,6 @@ suspend fun main() {
 }
 
 fun Application.module() {
+    configureSecurity()
     configureRouting()
 }
