@@ -21,10 +21,6 @@ class Forwarder(
         }
     }
 
-    // curr state
-    // handle diff http methods
-    // add auth so only the balancer can call the servers
-
     private tailrec fun getServer(): Int {
         currServer++
 
@@ -39,8 +35,12 @@ class Forwarder(
         }
     }
 
-    suspend fun sendRequest(): HttpResponse {
-        return client.get("http://localhost:${getServer()}")
+    suspend fun sendRequest(token: String): HttpResponse {
+        return client.get("http://localhost:${getServer()}") {
+            headers {
+                append(HttpHeaders.Authorization, "Bearer $token")
+            }
+        }
     }
 
     suspend fun healthCheck() {

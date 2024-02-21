@@ -1,7 +1,7 @@
 package com.gbaugh
 
 import com.gbaugh.forwarder.Forwarder
-import com.gbaugh.plugins.*
+import com.gbaugh.plugins.configureRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
