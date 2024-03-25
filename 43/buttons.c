@@ -4,7 +4,7 @@
 void handleMainMenuButtons(Button *buttonList[], int buttonCount) {
     int i;
     for (i = 0; i < buttonCount; i++) {
-        Button *currButton = *(buttonList + i);
+        Button *currButton = buttonList + i;
         DrawRectangleRounded(
             currButton->rect, 
             currButton->roundness, 
