@@ -1,7 +1,14 @@
 #include <stdio.h>
-#include "raylib.h"
 #include "main.h"
 #include "initialise.h"
+
+Color BG_COLOUR = BLACK;
+Color TEXT_COLOUR = WHITE;
+Color BUTTON_HIGHLIGHT = DARKBLUE;
+int FONT_SIZE = 30;
+int FONT_SIZE_SECONDARY = 20;
+
+char* MAINMENU_WELCOME = "Welcome to Tetris";
 
 int main(void) 
 {
@@ -23,6 +30,7 @@ int main(void)
     }
 
     CloseWindow();
+    freeButtons();
 
     return 0;
 }

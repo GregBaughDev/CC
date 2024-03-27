@@ -1,28 +1,32 @@
-#include "buttons.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include "buttons.h"
+#include "initialise.h"
 
-Button *buttons[];
-int buttonCount = 2;
+const int buttonCount = 2;
+Button *buttons[2];
 
-void initialise(void) {
-    Button *startButton = malloc(sizeof(Button));
-    if (startButton == NULL) {
-        printf("Malloc startButton failed");
-        return -1;
-    }
-    *startButton = createButton(150, MAINMENU_START, 165);
+char* MAINMENU_START = "Start";
+char* MAINMENU_HELP = "Help";
 
-    Button *helpButton = malloc(sizeof(Button));
-    if (helpButton == NULL) {
-        printf("Malloc helpButton failed");
-        return -1;
-    }
-    *helpButton = createButton(250, MAINMENU_HELP, 265);
+int initialise() {
+    Button *startButton = createButton(150, MAINMENU_START, 165);
+    Button *helpButton = createButton(250, MAINMENU_HELP, 265);
 
-    *buttons[0] = *startButton;
-    *buttons[1] = *helpButton;
+    buttons[0] = startButton;
+    buttons[1] = helpButton;
+
+    return 0;
 }
 
-void handleButtons(void) {
+void handleButtons() {
     handleMainMenuButtons(buttons, buttonCount);
+}
+
+void freeButtons() {
+    int i;
+    for (i = 0; i < buttonCount; i++) {
+        free(buttons[i]->buttonText);
+        free(buttons[i]);
+    }
 }
