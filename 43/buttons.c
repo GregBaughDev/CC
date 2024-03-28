@@ -8,7 +8,8 @@ int BUTTON_HEIGHT = 50;
 int ROUNDNESS = 2;
 int BUTTON_POS = (WINDOW_WIDTH / 2) - (BUTTON_WIDTH / 2);
 
-Button *createButton(int buttonYPos, char *labelText, int textYPos) {
+Button *createButton(int buttonYPos, char *labelText, int textYPos) 
+{
     Button *button = malloc(sizeof(Button));
     if (button == NULL) {
         printf("Malloc startButton failed");
@@ -37,7 +38,8 @@ Button *createButton(int buttonYPos, char *labelText, int textYPos) {
     return button;
 }
 
-void handleMainMenuButtons(Button *buttonList[], int buttonCount) {
+void handleMainMenuButtons(Button *buttonList[], int buttonCount) 
+{
     int i;
     for (i = 0; i < buttonCount; i++) {
         Button *currButton = buttonList[i];
@@ -54,5 +56,9 @@ void handleMainMenuButtons(Button *buttonList[], int buttonCount) {
             currButton->buttonText->fontSize,
             currButton->buttonText->textColour
         );
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), currButton->rect)) {
+            printf("Button pressed!: %s\n", currButton->buttonText->labelText); // check the button against string enum
+        }
     }
 }

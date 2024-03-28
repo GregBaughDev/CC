@@ -1,36 +1,43 @@
 #include <stdio.h>
 #include "main.h"
 #include "initialise.h"
+#include "mainmenu.h"
 
 Color BG_COLOUR = BLACK;
 Color TEXT_COLOUR = WHITE;
 Color BUTTON_HIGHLIGHT = DARKBLUE;
 int FONT_SIZE = 30;
 int FONT_SIZE_SECONDARY = 20;
+int FONT_SIZE_THIRD = 15;
 
-char* MAINMENU_WELCOME = "Welcome to Tetris";
+enum screen { MAIN_MENU, HELP, GAME };
+int currScreen = MAIN_MENU;
 
 int main(void) 
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Tetris");
-
-    int strMeasure = MeasureText(MAINMENU_WELCOME, FONT_SIZE) / 2;
-    int centrePoint = (WINDOW_WIDTH / 2) - strMeasure;
-
     initialise();
 
+    // screen is displayed depending on the enum using switch
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
         ClearBackground(BG_COLOUR);
-        DrawText(MAINMENU_WELCOME, centrePoint, 50, 30, TEXT_COLOUR);
-        handleButtons();
 
+        switch (currScreen)
+        {
+        case MAIN_MENU:
+            handleMainMenu();
+            break;
+        default:
+            break;
+        }
+        
         EndDrawing();
     }
 
     CloseWindow();
-    freeButtons();
+    freeButtons(); // could also free buttons when game started?
 
     return 0;
 }

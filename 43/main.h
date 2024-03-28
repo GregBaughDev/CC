@@ -6,6 +6,8 @@
 #define WINDOW_HEIGHT 650
 
 extern Color TEXT_COLOUR;
+extern int FONT_SIZE;
 extern int FONT_SIZE_SECONDARY;
+extern int FONT_SIZE_THIRD;
 
 #endif
