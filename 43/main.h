@@ -10,4 +10,7 @@ extern int FONT_SIZE;
 extern int FONT_SIZE_SECONDARY;
 extern int FONT_SIZE_THIRD;
 
+void setScreenToGame(void);
+void setScreenToHelp(void);
+
 #endif

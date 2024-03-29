@@ -19,7 +19,6 @@ typedef struct Button {
     ButtonText *buttonText;
 } Button;
 
-void handleMainMenuButtons(Button *buttonList[], int buttonCount);
 Button *createButton(int buttonYPos, char *labelText, int textYPos);
 
 #endif

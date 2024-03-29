@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "main.h"
-#include "initialise.h"
 #include "mainmenu.h"
 
 Color BG_COLOUR = BLACK;
@@ -12,6 +11,14 @@ int FONT_SIZE_THIRD = 15;
 
 enum screen { MAIN_MENU, HELP, GAME };
 int currScreen = MAIN_MENU;
+
+void setScreenToGame() {
+    currScreen = GAME;
+}
+
+void setScreenToHelp() {
+    currScreen = HELP;
+}
 
 int main(void) 
 {
@@ -28,6 +35,12 @@ int main(void)
         {
         case MAIN_MENU:
             handleMainMenu();
+            break;
+        case GAME:
+            printf("Game screen\n");
+            break;
+        case HELP:
+            printf("Help screen\n");
             break;
         default:
             break;

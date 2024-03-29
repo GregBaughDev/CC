@@ -37,28 +37,3 @@ Button *createButton(int buttonYPos, char *labelText, int textYPos)
 
     return button;
 }
-
-void handleMainMenuButtons(Button *buttonList[], int buttonCount) 
-{
-    int i;
-    for (i = 0; i < buttonCount; i++) {
-        Button *currButton = buttonList[i];
-        DrawRectangleRounded(
-            currButton->rect, 
-            currButton->roundness, 
-            0, 
-            CheckCollisionPointRec(GetMousePosition(), currButton->rect) ? currButton->activeColour : currButton->inactiveColour
-        );
-        DrawText(
-            currButton->buttonText->labelText, 
-            currButton->buttonText->textX,
-            currButton->buttonText->textY,
-            currButton->buttonText->fontSize,
-            currButton->buttonText->textColour
-        );
-
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), currButton->rect)) {
-            printf("Button pressed!: %s\n", currButton->buttonText->labelText); // check the button against string enum
-        }
-    }
-}
