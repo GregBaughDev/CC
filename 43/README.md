@@ -1,8 +1,14 @@
 # TO DO:
 - NEXT TIME: 
-    - Help button which opens new window
+    - Play screen
 
-- Step 1:
+- Step two:
+    - Play screen
+    - Play area
+    - Score logic
+    - Display score
+    - Quit button
+
+- To do later:
     - Fix Makefile
-    - Help button which opens new window
     - Store high scores in memory

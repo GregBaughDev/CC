@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "main.h"
 #include "mainmenu.h"
+#include "helpscreen.h"
 
 Color BG_COLOUR = BLACK;
 Color TEXT_COLOUR = WHITE;
@@ -11,6 +12,10 @@ int FONT_SIZE_THIRD = 15;
 
 enum screen { MAIN_MENU, HELP, GAME };
 int currScreen = MAIN_MENU;
+
+void setScreenToMainMenu() {
+    currScreen = MAIN_MENU;
+}
 
 void setScreenToGame() {
     currScreen = GAME;
@@ -25,7 +30,6 @@ int main(void)
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Tetris");
     initialise();
 
-    // screen is displayed depending on the enum using switch
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
@@ -33,14 +37,14 @@ int main(void)
 
         switch (currScreen)
         {
-        case MAIN_MENU:
-            handleMainMenu();
-            break;
         case GAME:
             printf("Game screen\n");
             break;
         case HELP:
-            printf("Help screen\n");
+            handleHelpScreen();
+            break;
+        case MAIN_MENU:
+            handleMainMenu();
             break;
         default:
             break;

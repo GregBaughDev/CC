@@ -6,8 +6,6 @@
 char* MAINMENU_WELCOME = "Welcome to Tetris";
 char* MAINMENU_SCORES = "High Scores";
 
-int WINDOW_WIDTH_HALF = WINDOW_WIDTH / 2;
-
 const int buttonCount = 2;
 Button *buttons[2];
 
