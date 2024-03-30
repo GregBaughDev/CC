@@ -3,7 +3,7 @@
 #include "raylib.h"
 
 #define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 650
+#define WINDOW_HEIGHT 800
 #define WINDOW_WIDTH_HALF 400
 
 extern Color TEXT_COLOUR;

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "mainmenu.h"
 #include "helpscreen.h"
+#include "gamescreen.h"
 
 Color BG_COLOUR = BLACK;
 Color TEXT_COLOUR = WHITE;
@@ -38,7 +39,7 @@ int main(void)
         switch (currScreen)
         {
         case GAME:
-            printf("Game screen\n");
+            handleGameScreen();
             break;
         case HELP:
             handleHelpScreen();
