@@ -33,7 +33,7 @@ int main(void)
 
     while (!WindowShouldClose()) 
     {
-        BeginDrawing();
+        BeginDrawing(); // only call this once everything is loaded
         ClearBackground(BG_COLOUR);
 
         switch (currScreen)

@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "tetromino.h"
 #include "main.h"
+#include "buttons.h"
 
 int GAMEAREA_START_X = 250;
 int GAMEAREA_START_Y = 100;
@@ -11,13 +12,17 @@ int NEXTPIECE_START_X = 50;
 int NEXTPIECE_START_Y = 100;
 int NEXTPIECE_END_X = 200;
 int NEXTPIECE_END_Y = 250;
+char* NEXTPIECE_LABEL = "Next";
 
 int SCOREAREA_START_X = 575;
 int SCOREAREA_START_Y = 100;
 int SCOREAREA_END_X = 750;
 int SCOREAREA_END_Y = 200;
 char* SCOREAREA_LABEL = "Score";
-int SCOREAREA_LABEL_Y_POS = 130; 
+
+int LABEL_Y_POS = 130; 
+
+Button *exitButton; // need to free it also
 
 void drawArea(int startX, int startY, int endX, int endY);
 void setupGame();
@@ -25,21 +30,34 @@ void setupGame();
 void handleGameScreen() {
     // this funtion should just handle the game play
     setupGame(); // this should be moved so it's not repeatedly called
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), exitButton->rect)) {
+        setScreenToMainMenu();
+    }
+
+    
 }
 
 void setupGame() {
     drawArea(GAMEAREA_START_X, GAMEAREA_START_Y, GAMEAREA_END_X, GAMEAREA_END_Y);
     drawArea(NEXTPIECE_START_X, NEXTPIECE_START_Y, NEXTPIECE_END_X, NEXTPIECE_END_Y);
-    // TO DO - Add "Next" text 
+    DrawText(
+        NEXTPIECE_LABEL,
+        140 - (MeasureText(NEXTPIECE_LABEL, FONT_SIZE_SECONDARY) / 2),
+        LABEL_Y_POS,
+        FONT_SIZE_SECONDARY, 
+        TEXT_COLOUR
+    );
     drawArea(SCOREAREA_START_X, SCOREAREA_START_Y, SCOREAREA_END_X, SCOREAREA_END_Y);
     DrawText(
         SCOREAREA_LABEL, 
         675 - (MeasureText(SCOREAREA_LABEL, FONT_SIZE_SECONDARY) / 2),
-        SCOREAREA_LABEL_Y_POS,
+        LABEL_Y_POS,
         FONT_SIZE_SECONDARY, 
         TEXT_COLOUR
     );
-    // create button
+    exitButton = createButton(700, "Exit");
+    drawButton(exitButton);
 }
 
 void drawArea(int startX, int startY, int endX, int endY) {

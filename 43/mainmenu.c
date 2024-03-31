@@ -16,8 +16,8 @@ void handleMainMenuButtons(Button *buttonList[], int buttonCount);
 
 int initialise() 
 {
-    Button *startButton = createButton(150, MAINMENU_START, 165);
-    Button *helpButton = createButton(250, MAINMENU_HELP, 265);
+    Button *startButton = createButton(150, MAINMENU_START);
+    Button *helpButton = createButton(250, MAINMENU_HELP);
 
     buttons[0] = startButton;
     buttons[1] = helpButton;
@@ -65,20 +65,7 @@ void handleMainMenuButtons(Button *buttonList[], int buttonCount)
     int i;
     for (i = 0; i < buttonCount; i++) {
         Button *currButton = buttonList[i];
-        DrawRectangleRounded(
-            currButton->rect, 
-            currButton->roundness, 
-            0, 
-            CheckCollisionPointRec(GetMousePosition(), currButton->rect) ? currButton->activeColour : currButton->inactiveColour
-        );
-        DrawText(
-            currButton->buttonText->labelText, 
-            currButton->buttonText->textX,
-            currButton->buttonText->textY,
-            currButton->buttonText->fontSize,
-            currButton->buttonText->textColour
-        );
-
+        drawButton(currButton);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), currButton->rect)) {
             if (currButton->buttonText->labelText == MAINMENU_START) {
                 setScreenToGame();

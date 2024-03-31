@@ -3,7 +3,8 @@
 #include "raylib.h"
 #include "main.h"
 
-typedef struct ButtonText {
+typedef struct ButtonText 
+{
     Color textColour;
     int textX;
     int textY;
@@ -11,7 +12,8 @@ typedef struct ButtonText {
     const char* labelText;
 } ButtonText;
 
-typedef struct Button {
+typedef struct Button 
+{
     Rectangle rect;
     Color inactiveColour;
     Color activeColour;
@@ -19,6 +21,7 @@ typedef struct Button {
     ButtonText *buttonText;
 } Button;
 
-Button *createButton(int buttonYPos, char *labelText, int textYPos);
+Button *createButton(int buttonYPos, char *labelText);
+void drawButton(Button *button);
 
 #endif

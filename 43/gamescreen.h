@@ -2,5 +2,6 @@
 #define _GAMESCREEN_H
 
 void handleGameScreen();
+void setupGame();
 
 #endif
