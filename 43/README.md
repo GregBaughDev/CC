@@ -2,12 +2,9 @@
 - NEXT TIME: 
     - Play screen
 
-- Step two:
-    - Play screen
-    - Play area
-    - Score logic
-    - Display score
-    - Quit button
+- Step three:
+    - Tetronimos
+    - Score logic -- Come back to
 
 - To do later:
     - Fix Makefile
