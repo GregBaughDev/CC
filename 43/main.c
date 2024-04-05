@@ -14,16 +14,25 @@ int FONT_SIZE_THIRD = 15;
 enum screen { MAIN_MENU, HELP, GAME };
 int currScreen = MAIN_MENU;
 
-void setScreenToMainMenu() {
+void setScreenToMainMenu() 
+{
     currScreen = MAIN_MENU;
 }
 
-void setScreenToGame() {
+void setScreenToGame() 
+{
     currScreen = GAME;
 }
 
-void setScreenToHelp() {
+void setScreenToHelp() 
+{
     currScreen = HELP;
+}
+
+void initialise() 
+{
+    initialiseMainMenu();
+    initialiseGameScreen();
 }
 
 int main(void) 
@@ -39,13 +48,14 @@ int main(void)
         switch (currScreen)
         {
         case GAME:
-            handleGameScreen();
+            drawGame();
+            handleGame();
             break;
         case HELP:
-            handleHelpScreen();
+            drawHelpScreen();
             break;
         case MAIN_MENU:
-            handleMainMenu();
+            drawMainMenu();
             break;
         default:
             break;
@@ -55,7 +65,8 @@ int main(void)
     }
 
     CloseWindow();
-    freeButtons(); // could also free buttons when game started?
+    freeMainMenu();
+    freeGame();
 
     return 0;
 }

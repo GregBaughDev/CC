@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <stdlib.h>
 #include "tetromino.h"
 #include "main.h"
 #include "buttons.h"
@@ -25,20 +26,29 @@ int LABEL_Y_POS = 130;
 Button *exitButton; // need to free it also
 
 void drawArea(int startX, int startY, int endX, int endY);
-void setupGame();
 
-void handleGameScreen() {
-    // this funtion should just handle the game play
-    setupGame(); // this should be moved so it's not repeatedly called
+void initialiseGameScreen() 
+{
+    exitButton = createButton(700, "Exit");
+    initialiseTetromino();
+}
 
+void handleGame() 
+{
+    handleTetromino();
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), exitButton->rect)) {
         setScreenToMainMenu();
     }
-
-    
 }
 
-void setupGame() {
+void freeGame() 
+{
+    free(exitButton);
+    freeTetromino();
+}
+
+void drawGame() 
+{
     drawArea(GAMEAREA_START_X, GAMEAREA_START_Y, GAMEAREA_END_X, GAMEAREA_END_Y);
     drawArea(NEXTPIECE_START_X, NEXTPIECE_START_Y, NEXTPIECE_END_X, NEXTPIECE_END_Y);
     DrawText(
@@ -56,11 +66,11 @@ void setupGame() {
         FONT_SIZE_SECONDARY, 
         TEXT_COLOUR
     );
-    exitButton = createButton(700, "Exit");
     drawButton(exitButton);
 }
 
-void drawArea(int startX, int startY, int endX, int endY) {
+void drawArea(int startX, int startY, int endX, int endY) 
+{
     int x, y;
     for (y = startY; y <= endY; y += TETRO_HEIGHT) {
         for (x = startX; x <= endX; x += TETRO_WIDTH) {

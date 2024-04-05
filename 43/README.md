@@ -1,6 +1,6 @@
 # TO DO:
-- NEXT TIME: 
-    - Play screen
+- CURRENT:
+    -Set up vs Game loop
 
 - Step three:
     - Tetronimos

@@ -38,7 +38,8 @@ Button *createButton(int buttonYPos, char *labelText)
     return button;
 }
 
-void drawButton(Button *button) {
+void drawButton(Button *button) 
+{
     DrawRectangleRounded(
         button->rect, 
         button->roundness, 

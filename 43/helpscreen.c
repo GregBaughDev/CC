@@ -5,7 +5,7 @@ char* HELP_HEADING = "Help";
 char* HELP_TEXT = "The aim of the game is to create full lines from the\ndropping pieces.\nUse the spacebar to turn the shapes and use the left\nand right keys to move the pieces. Holding the down\narrow will make the pieces drop quickly.\nThe game is over when there's no more space for\nthe pieces.";
 char* HELP_EXIT = "Press mouse button to return to main menu";
 
-void handleHelpScreen()
+void drawHelpScreen()
 {
     SetTextLineSpacing(30);
     DrawText(

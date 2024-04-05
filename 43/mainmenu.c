@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "main.h"
 #include "buttons.h"
+#include "gamescreen.h"
 
 char* MAINMENU_WELCOME = "Welcome to Tetris";
 char* MAINMENU_SCORES = "High Scores";
@@ -14,7 +15,7 @@ char* MAINMENU_HELP = "Help";
 
 void handleMainMenuButtons(Button *buttonList[], int buttonCount);
 
-int initialise() 
+int initialiseMainMenu() 
 {
     Button *startButton = createButton(150, MAINMENU_START);
     Button *helpButton = createButton(250, MAINMENU_HELP);
@@ -25,7 +26,7 @@ int initialise()
     return 0;
 }
 
-void freeButtons() 
+void freeMainMenu() 
 {
     int i;
     for (i = 0; i < buttonCount; i++) {
@@ -34,7 +35,7 @@ void freeButtons()
     }
 }
 
-void handleMainMenu() 
+void drawMainMenu() 
 {
     DrawText(
         MAINMENU_WELCOME, 

@@ -22,6 +22,10 @@ typedef struct Tetromino
     int currStructure;
 } Tetromino;
 
+void initialiseTetromino();
+void handleTetromino();
+void freeTetromino();
+
 /**
  *  X 0 0 0 | X X X X
  *  X 0 0 0 | 0 0 0 0
