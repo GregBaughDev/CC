@@ -4,33 +4,52 @@
 #include <stdbool.h>
 #include "tetromino.h"
 
-int ITetro1[4][1] = {{1}, {1}, {1}, {1}};
-int ITetro2[1][4] = {{1, 1, 1, 1}};
+int ITetro1[1][4] = {{1, 1, 1, 1}};
+int ITetro2[4][1] = {{1}, {1}, {1}, {1}};
 
 Tetromino *first;
 
 Tetromino *createTetromino(int numStructures, Color colour);
-Tetromino *addStructure(Tetromino *tetro, int maxY, int maxX, const int structureArr[maxX][maxY], int numStruct);
+Tetromino *addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[maxX][maxY], int numStruct);
 
 void initialiseTetromino() 
 {
     first = createTetromino(2, SKYBLUE);
-    addStructure(first, 1, 4, ITetro1, 0);
-    addStructure(first, 4, 1, ITetro2, 1);
+    addStructure(first, 4, 1, ITetro1, 0);
+    addStructure(first, 1, 4, ITetro2, 1);
 }
 
 void freeTetromino() 
 {
     int i;
     for (i = 0; i < first->numStructures; i++) {
-        free(first->structure[0]);
+        free(first->structure[i]);
     }
     free(first);
 }
 
 void handleTetromino() 
 {
-    DrawRectangle(first->xPos, first->yPos, first->structure[0]->maxX * TETRO_WIDTH, TETRO_HEIGHT, first->colour);
+    if (IsKeyPressed(KEY_RIGHT)) {
+        first->xPos += TETRO_WIDTH;
+    } else if (IsKeyPressed(KEY_LEFT)) {
+        first->xPos -= TETRO_WIDTH;
+    } else if (IsKeyPressed(KEY_DOWN)) {
+        first->yPos += TETRO_HEIGHT;
+    } else if (IsKeyPressed(KEY_UP)) {
+        if (first->currStructure + 1 == first->numStructures) {
+            first->currStructure = 0;
+        } else {
+            first->currStructure++;
+        }
+    }
+    DrawRectangle(
+        first->xPos, 
+        first->yPos, 
+        first->structure[first->currStructure]->maxX * TETRO_WIDTH, 
+        first->structure[first->currStructure]->maxY * TETRO_HEIGHT, 
+        first->colour
+    );
 }
 
 Tetromino *createTetromino(int numStructures, Color colour)
@@ -49,7 +68,7 @@ Tetromino *createTetromino(int numStructures, Color colour)
     return tetro;
 }
 
-Tetromino *addStructure(Tetromino *tetro, int maxY, int maxX, const int structureArr[maxX][maxY], int numStruct)
+Tetromino *addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[maxX][maxY], int numStruct)
 {
     Structure *structure = malloc(sizeof(Structure));
     if (structure == NULL) {
