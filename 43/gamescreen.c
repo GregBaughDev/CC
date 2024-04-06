@@ -81,5 +81,3 @@ void drawArea(int startX, int startY, int endX, int endY)
     }
 }
 
-// we should call initialise with other initialise in c - all memory stuff should be loaded on start up
-

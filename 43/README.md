@@ -1,6 +1,8 @@
 # TO DO:
 - CURRENT:
-    -Set up vs Game loop
+    - Rest of tetronomios
+    - Falling tetros
+    - Wall logic
 
 - Step three:
     - Tetronimos

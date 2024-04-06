@@ -27,6 +27,7 @@ void handleTetromino();
 void freeTetromino();
 
 /**
+ * iTetro
  *  X 0 0 0 | X X X X
  *  X 0 0 0 | 0 0 0 0
  *  X 0 0 0 | 0 0 0 0
@@ -34,6 +35,7 @@ void freeTetromino();
 */
 
 /**
+ * sqTetro
  * X X 0 0
  * X X 0 0
  * 0 0 0 0
@@ -41,6 +43,7 @@ void freeTetromino();
 */
 
 /**
+ * revLTetro
  * 0 X 0 0 | X 0 0 0 | X X 0 0 | X X X 0
  * 0 X 0 0 | X X X 0 | X 0 0 0 | 0 0 X 0
  * X X 0 0 | 0 0 0 0 | X 0 0 0 | 0 0 0 0
