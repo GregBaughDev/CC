@@ -1,8 +1,7 @@
 # TO DO:
 - CURRENT:
-    - Rest of tetronomios
+    - Wall logic WIP
     - Falling tetros
-    - Wall logic
 
 - Step three:
     - Tetronimos

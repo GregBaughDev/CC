@@ -3,16 +3,8 @@
 #include "tetromino.h"
 #include "main.h"
 #include "buttons.h"
+#include "gamescreen.h"
 
-int GAMEAREA_START_X = 250;
-int GAMEAREA_START_Y = 100;
-int GAMEAREA_END_X = 525;
-int GAMEAREA_END_Y = 650;
-
-int NEXTPIECE_START_X = 50;
-int NEXTPIECE_START_Y = 100;
-int NEXTPIECE_END_X = 200;
-int NEXTPIECE_END_Y = 250;
 char* NEXTPIECE_LABEL = "Next";
 
 int SCOREAREA_START_X = 575;
@@ -23,7 +15,7 @@ char* SCOREAREA_LABEL = "Score";
 
 int LABEL_Y_POS = 130; 
 
-Button *exitButton; // need to free it also
+Button *exitButton;
 
 void drawArea(int startX, int startY, int endX, int endY);
 

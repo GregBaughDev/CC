@@ -51,6 +51,7 @@ void freeTetromino();
 */
 
 /**
+ * lTetro
  * X 0 0 0 | X X X 0 | X X 0 0 | 0 0 X 0
  * X 0 0 0 | X 0 0 0 | 0 X 0 0 | X X X 0
  * X X 0 0 | 0 0 0 0 | 0 X 0 0 | 0 0 0 0
@@ -58,6 +59,7 @@ void freeTetromino();
 */
 
 /**
+ * zzTetro
  * 0 X X 0 | X 0 0 0
  * X X 0 0 | X X 0 0
  * 0 0 0 0 | 0 X 0 0 
@@ -65,6 +67,7 @@ void freeTetromino();
 */
 
 /**
+ * revZzTetro
  * X X 0 0 | 0 X 0 0
  * 0 X X 0 | X X 0 0 
  * 0 0 0 0 | X 0 0 0
@@ -72,6 +75,7 @@ void freeTetromino();
 */
 
 /**
+ * tTetro
  * X X X 0 | 0 X 0 0 | 0 X 0 0 | X 0 0 0 
  * 0 X 0 0 | X X 0 0 | X X X 0 | X X 0 0 
  * 0 0 0 0 | 0 X 0 0 | 0 0 0 0 | X 0 0 0 
