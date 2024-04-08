@@ -38,6 +38,7 @@ void initialise()
 int main(void) 
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Tetris");
+    SetWindowState(FLAG_VSYNC_HINT);
     initialise();
 
     while (!WindowShouldClose()) 

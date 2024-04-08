@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <raylib.h>
-#include <stdbool.h>
 #include "tetromino.h"
 #include "gamescreen.h"
 
@@ -112,15 +111,15 @@ void handleTetromino()
 
     int xIsSafeRight = tetrominos[currTet]->xPos + tetrominos[currTet]->structure[tetrominos[currTet]->currStructure]->maxX * TETRO_WIDTH < GAMEAREA_END_X;
     int xIsSafeLeft = tetrominos[currTet]->xPos > GAMEAREA_START_X + TETRO_WIDTH;
-    // int isSafeTurn = NEXT TIME: Logic for checking if tetro can turn
-    // https://github.com/raysan5/raylib/issues/217 - see if helps with high cpu usage
+    int isSafeTurn = tetrominos[currTet]->xPos + tetrominos[currTet]->structure[tetrominos[currTet]->currStructure + 1 == tetrominos[currTet]->numStructures ? 0 : tetrominos[currTet]->currStructure + 1]->maxX * TETRO_WIDTH <= GAMEAREA_END_X;
+    
     if (IsKeyPressed(KEY_RIGHT) && xIsSafeRight) {
         tetrominos[currTet]->xPos += TETRO_WIDTH;
     } else if (IsKeyPressed(KEY_LEFT) && xIsSafeLeft) {
         tetrominos[currTet]->xPos -= TETRO_WIDTH;
     } else if (IsKeyPressed(KEY_DOWN)) {
         tetrominos[currTet]->yPos += TETRO_HEIGHT;
-    } else if (IsKeyPressed(KEY_UP)) {
+    } else if (IsKeyPressed(KEY_UP) && isSafeTurn) {
         if (tetrominos[currTet]->currStructure + 1 == tetrominos[currTet]->numStructures) {
             tetrominos[currTet]->currStructure = 0;
         } else {
