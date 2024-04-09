@@ -99,7 +99,7 @@ void freeTetromino()
 }
 
 void handleTetromino() 
-{
+{ 
     //debugging
     if (IsKeyPressed(KEY_SPACE)) {
         if (currTet == 6) {
@@ -109,17 +109,31 @@ void handleTetromino()
         }
     }
 
+    if (
+        tetrominos[currTet]->yPos +
+        (tetrominos[currTet]->structure[tetrominos[currTet]->currStructure]->maxY * TETRO_HEIGHT) < GAMEAREA_END_Y
+        ) {
+        tetrominos[currTet]->yPos += 1; // UP TO HERE - Pressing down is also quite jolty
+    }
+
     int xIsSafeRight = tetrominos[currTet]->xPos + tetrominos[currTet]->structure[tetrominos[currTet]->currStructure]->maxX * TETRO_WIDTH < GAMEAREA_END_X;
     int xIsSafeLeft = tetrominos[currTet]->xPos > GAMEAREA_START_X + TETRO_WIDTH;
-    int isSafeTurn = tetrominos[currTet]->xPos + tetrominos[currTet]->structure[tetrominos[currTet]->currStructure + 1 == tetrominos[currTet]->numStructures ? 0 : tetrominos[currTet]->currStructure + 1]->maxX * TETRO_WIDTH <= GAMEAREA_END_X;
-    
+    int isXSafeTurn = tetrominos[currTet]->xPos + tetrominos[currTet]->structure[tetrominos[currTet]->currStructure + 1 == tetrominos[currTet]->numStructures ? 0 : tetrominos[currTet]->currStructure + 1]->maxX * TETRO_WIDTH <= GAMEAREA_END_X;
+    int isYSafeTurn; // add check for bottom also
+
     if (IsKeyPressed(KEY_RIGHT) && xIsSafeRight) {
         tetrominos[currTet]->xPos += TETRO_WIDTH;
-    } else if (IsKeyPressed(KEY_LEFT) && xIsSafeLeft) {
+    } 
+    
+    if (IsKeyPressed(KEY_LEFT) && xIsSafeLeft) {
         tetrominos[currTet]->xPos -= TETRO_WIDTH;
-    } else if (IsKeyPressed(KEY_DOWN)) {
+    } 
+    
+    if (IsKeyPressed(KEY_DOWN)) {
         tetrominos[currTet]->yPos += TETRO_HEIGHT;
-    } else if (IsKeyPressed(KEY_UP) && isSafeTurn) {
+    }
+    
+    if (IsKeyPressed(KEY_UP) && isXSafeTurn) {
         if (tetrominos[currTet]->currStructure + 1 == tetrominos[currTet]->numStructures) {
             tetrominos[currTet]->currStructure = 0;
         } else {

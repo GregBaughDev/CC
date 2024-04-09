@@ -26,7 +26,7 @@ void initialiseGameScreen()
 }
 
 void handleGame() 
-{
+{   
     handleTetromino();
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), exitButton->rect)) {
         setScreenToMainMenu();
@@ -59,6 +59,7 @@ void drawGame()
         TEXT_COLOUR
     );
     drawButton(exitButton);
+    // drawTetromino - this draws all existing tetros
 }
 
 void drawArea(int startX, int startY, int endX, int endY) 

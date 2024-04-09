@@ -39,11 +39,12 @@ int main(void)
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Tetris");
     SetWindowState(FLAG_VSYNC_HINT);
+    SetTargetFPS(60);
     initialise();
 
     while (!WindowShouldClose()) 
     {
-        BeginDrawing(); // only call this once everything is loaded
+        BeginDrawing();
         ClearBackground(BG_COLOUR);
 
         switch (currScreen)

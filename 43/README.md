@@ -1,6 +1,5 @@
 # TO DO:
 - CURRENT:
-    - Wall logic WIP
     - Falling tetros
 
 - Step three:
