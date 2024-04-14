@@ -20,6 +20,7 @@ typedef struct Tetromino
     struct Structure *structure[4];
     int numStructures;
     int currStructure;
+    int isFalling;
 } Tetromino;
 
 void initialiseTetromino();

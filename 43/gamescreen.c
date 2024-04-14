@@ -59,7 +59,7 @@ void drawGame()
         TEXT_COLOUR
     );
     drawButton(exitButton);
-    // drawTetromino - this draws all existing tetros
+    // drawGrid - this handles everything in the grid
 }
 
 void drawArea(int startX, int startY, int endX, int endY) 

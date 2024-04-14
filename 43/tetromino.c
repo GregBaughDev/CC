@@ -42,7 +42,7 @@ Tetromino *tetrominos[7];
 Tetromino *createTetromino(int numStructures, Color colour);
 void addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[maxY][maxX], int numStruct);
 
-int currTet = 6; // used for debugging
+int currTet; // used for debugging -> currTet = rand() % 7;
 
 int lookahead;
 int xIsSafeRight;
@@ -50,6 +50,9 @@ int xIsSafeLeft;
 int isXSafeTurn;
 int isYSafeTurn;
 int isDownSafe;
+
+const int gridX = (GAMEAREA_END_X - GAMEAREA_START_X - TETRO_WIDTH) / TETRO_WIDTH;
+const int gridY = (GAMEAREA_END_Y - GAMEAREA_START_Y - TETRO_HEIGHT) / TETRO_HEIGHT;
 
 void initialiseTetromino() 
 {
@@ -107,6 +110,8 @@ void freeTetromino()
 
 void handleTetromino() 
 { 
+// next - handle how the tetros can fall and set isFalling to false when can no longer fall
+
     //debugging
     if (IsKeyPressed(KEY_SPACE)) {
         if (currTet == 6) {
@@ -164,6 +169,8 @@ void handleTetromino()
             }
         }
     }
+    // if !isFalling -> copy into grid from tetroArray[]
+    // grid also needs to handle moving all blocks in row above down 
 }
 
 Tetromino *createTetromino(int numStructures, Color colour)
@@ -179,6 +186,7 @@ Tetromino *createTetromino(int numStructures, Color colour)
     tetro->xPos = 300;
     tetro->yPos = 150;
     tetro->colour = colour;
+    tetro->isFalling = 1;
     return tetro;
 }
 

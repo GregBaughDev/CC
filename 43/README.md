@@ -1,11 +1,9 @@
 # TO DO:
 - CURRENT:
-    - Falling tetros
+    - handle falling on top of each other
 
-- Step three:
-    - Tetronimos
-    - Score logic -- Come back to
-
-- To do later:
+    - line removal logic
+    - next tetro
+    - scores
     - Fix Makefile
     - Store high scores in memory
