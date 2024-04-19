@@ -32,7 +32,7 @@ int tTetroArr4[3][2] = {{1}, {1, 1}, {1}};
 
 int currTet = 0; // points to active tetro in gameTetros array
 int gameTetroCount = 0;
-Tetromino *gameTetros[10]; // need to update the array size when it's almost full
+Tetromino *gameTetros[10];
 
 Tetromino *createTetromino(int numStructures, Color colour);
 void addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[maxY][maxX], int numStruct);
@@ -52,9 +52,14 @@ const int gridY = (GAMEAREA_END_Y - GAMEAREA_START_Y - TETRO_HEIGHT) / TETRO_HEI
 
 void resizeGameTetrominoList() 
 {
-    // resize the array for holding the tetros
-    static int currentCapacity = 10;
-    // if size is less tha
+    // current state - this isn't working as we don't alloc the gameTetros array
+    Tetromino *copyGameTetros = realloc(gameTetros, sizeof(Tetromino) * (gameTetroCount * 2));
+    if (copyGameTetros == NULL) {
+        printf("resizeGameTetrominoList failed");
+        exit(1);
+    }
+    *gameTetros = copyGameTetros;
+    free(copyGameTetros);
 }
 
 void initialiseTetromino() 
@@ -134,14 +139,12 @@ void createNextTetro()
     } 
     
     gameTetroCount++;
-    // if game tetro count == size of array 
-    // increase the size
 }
 
 void freeTetromino() 
 {
     int i, j;
-    for (i = 0; i < 7; i++) {
+    for (i = 0; i <= currTet; i++) {
         for (j = 0; j < gameTetros[i]->numStructures; j++) {
             free(gameTetros[i]->structure[j]);
         }
@@ -216,6 +219,10 @@ void handleTetromino()
     if (gameTetros[currTet]->isFalling) {
         handleTetroMovement();
     } else {
+        if (sizeof(gameTetros) / sizeof(gameTetros[0]) == gameTetroCount) {
+            resizeGameTetrominoList();
+        }
+        printf("SIZE OF ARRAY: %d\n", sizeof(gameTetros) / sizeof(gameTetros[0]));
         createNextTetro();
         currTet++;
     }
@@ -230,7 +237,7 @@ Tetromino *createTetromino(int numStructures, Color colour)
     Tetromino *tetro = malloc(sizeof(Tetromino));
     if (tetro == NULL) {
         printf("Malloc tetro failed");
-        exit(-1);
+        exit(1);
     }
 
     tetro->numStructures = numStructures;
@@ -247,7 +254,7 @@ void addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[m
     Structure *structure = malloc(sizeof(Structure));
     if (structure == NULL) {
         printf("Malloc structure failed");
-        exit(-1);
+        exit(1);
     }
     
     structure->maxX = maxX;
