@@ -32,13 +32,14 @@ int tTetroArr4[3][2] = {{1}, {1, 1}, {1}};
 
 int currTet = 0; // points to active tetro in gameTetros array
 int gameTetroCount = 0;
-Tetromino *gameTetros[10];
+Tetromino **gameTetros;
 
 Tetromino *createTetromino(int numStructures, Color colour);
 void addStructure(Tetromino *tetro, int maxX, int maxY, const int structureArr[maxY][maxX], int numStruct);
-void drawCurrentTetromino();
+void drawTetrominos();
 void handleTetroMovement();
 void createNextTetro();
+bool isTetroBlocking(int currX, int currY);
 
 int lookahead;
 int xIsSafeRight;
@@ -52,18 +53,22 @@ const int gridY = (GAMEAREA_END_Y - GAMEAREA_START_Y - TETRO_HEIGHT) / TETRO_HEI
 
 void resizeGameTetrominoList() 
 {
-    // current state - this isn't working as we don't alloc the gameTetros array
-    Tetromino *copyGameTetros = realloc(gameTetros, sizeof(Tetromino) * (gameTetroCount * 2));
+    Tetromino **copyGameTetros = realloc(gameTetros, sizeof(Tetromino *) * (gameTetroCount * 2));
     if (copyGameTetros == NULL) {
-        printf("resizeGameTetrominoList failed");
+        printf("resizeGameTetrominoList failed\n");
         exit(1);
     }
-    *gameTetros = copyGameTetros;
+    gameTetros = copyGameTetros;
     free(copyGameTetros);
 }
 
 void initialiseTetromino() 
 {
+    gameTetros = malloc(sizeof(Tetromino *) * 10);
+    if (gameTetros == NULL) {
+        printf("Malloc gameTetros failed\n");
+        exit(1);
+    }
     createNextTetro();
 }
 
@@ -152,22 +157,51 @@ void freeTetromino()
     }
 }
 
-void drawCurrentTetromino()
+void drawTetrominos()
 {
-    int y, x;
-    for (y = 0; y < gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxY; y++) {
-        for (x = 0; x < gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxX; x++) {
-            if (gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->structure[y][x]) {
-                DrawRectangle(
-                    gameTetros[currTet]->xPos + (x * TETRO_WIDTH),
-                    gameTetros[currTet]->yPos + (y * TETRO_HEIGHT),
-                    TETRO_WIDTH,
-                    TETRO_HEIGHT,
-                    gameTetros[currTet]->colour
-                );
+    int i, y, x;
+    for (i = 0; i < gameTetroCount; i++) {
+        int y, x;
+        for (y = 0; y < gameTetros[i]->structure[gameTetros[i]->currStructure]->maxY; y++) {
+            for (x = 0; x < gameTetros[i]->structure[gameTetros[i]->currStructure]->maxX; x++) {
+                if (gameTetros[i]->structure[gameTetros[i]->currStructure]->structure[y][x]) {
+                    DrawRectangle(
+                        gameTetros[i]->xPos + (x * TETRO_WIDTH),
+                        gameTetros[i]->yPos + (y * TETRO_HEIGHT),
+                        TETRO_WIDTH,
+                        TETRO_HEIGHT,
+                        gameTetros[i]->colour
+                    );
+                }
             }
         }
     }
+}
+
+bool isTetroBlocking(int currX, int currY)
+{
+    // TO DO - Fix the collision
+    int i, y, x;
+    for (i = 0; i < currTet; i++) {
+        int y, x;
+        int currMaxY = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxY;
+        int currMaxX = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxX;
+        printf("CURRTETY: %d, CURRY: %d\n", gameTetros[i]->yPos, currY);
+        printf("CURRTETX: %d, CURRX: %d\n", gameTetros[i]->xPos, currX);
+        for (y = 0; y < currMaxY; y++) {
+            for (x = 0; x < currMaxX; x++) {
+                if (
+                    currY >= gameTetros[i]->yPos && 
+                    currY <= gameTetros[i]->yPos + (currMaxY * TETRO_HEIGHT) &&
+                    currX >= gameTetros[i]->xPos &&
+                    currX <= gameTetros[i]->xPos + (currMaxX * TETRO_WIDTH)) {
+                    printf("is collision\n");
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 void handleTetroMovement()
@@ -207,9 +241,9 @@ void handleTetromino()
 { 
     int canTetroFall = gameTetros[currTet]->yPos +
         (gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxY * TETRO_HEIGHT) < GAMEAREA_END_Y;
-    int isTetroBlocking;
+    int isTetroBlocked = isTetroBlocking(gameTetros[currTet]->xPos, gameTetros[currTet]->yPos);
 
-    if (canTetroFall) {
+    if (canTetroFall && !isTetroBlocked) {
         gameTetros[currTet]->yPos += 1;
     } else {
         // the tetro has stopped falling
@@ -219,17 +253,15 @@ void handleTetromino()
     if (gameTetros[currTet]->isFalling) {
         handleTetroMovement();
     } else {
-        if (sizeof(gameTetros) / sizeof(gameTetros[0]) == gameTetroCount) {
-            resizeGameTetrominoList();
-        }
-        printf("SIZE OF ARRAY: %d\n", sizeof(gameTetros) / sizeof(gameTetros[0]));
+        // TO DO - This is the culprit!
+        // if (sizeof(gameTetros) / sizeof(gameTetros[0]) == gameTetroCount) {
+        //     resizeGameTetrominoList();
+        // }
         createNextTetro();
         currTet++;
     }
 
-    drawCurrentTetromino();
-    // TO DO - Draw all tetros in the array
-
+    drawTetrominos();
 }
 
 Tetromino *createTetromino(int numStructures, Color colour)
