@@ -184,29 +184,30 @@ void drawTetrominos()
 
 bool isTetroCollision()
 {
-    // TO DO
-    // CURRENT STATE - We are not accounting for gaps in shapes - see below :(
-    // We need to compare each rectangle against the current
-    // which would be a performance nightmare
-    int i, y, x;
+    // This function = actual literal hell on earth
+    // 5 levels deep of for loops :'(
+    int i, y, x, j, k;
     for (i = 0; i < currTet; i++) {
-        int y, x;
-        int activeTetY = gameTetros[currTet]->yPos;
-        int activeTetX = gameTetros[currTet]->xPos;
-        int activeTetMaxY = gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxY;
-        int activeTetMaxX = gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxX;
-        int currMaxY = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxY;
-        int currMaxX = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxX;
-        for (y = 0; y < currMaxY; y++) {
-            for (x = 0; x < currMaxX; x++) {
-                if (
-                    ((activeTetX >= gameTetros[i]->xPos && 
-                    activeTetX < gameTetros[i]->xPos + (currMaxX * TETRO_WIDTH)) ||
-                    (activeTetX + (activeTetMaxX * TETRO_WIDTH) > gameTetros[i]->xPos && 
-                    activeTetX + (activeTetMaxX * TETRO_WIDTH) <= gameTetros[i]->xPos + (currMaxX * TETRO_WIDTH))) &&
-                    activeTetY + (activeTetMaxY * TETRO_HEIGHT) >= gameTetros[i]->yPos
-                ) {
-                    return true;
+        for (j = 0; j < gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxY; j++) {
+            for (k = 0; k < gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->maxX; k++) {
+                if (gameTetros[currTet]->structure[gameTetros[currTet]->currStructure]->structure[j][k]) {
+                    int activeTetY = gameTetros[currTet]->yPos;
+                    int activeTetX = gameTetros[currTet]->xPos;
+                    int currMaxY = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxY;
+                    int currMaxX = gameTetros[i]->structure[gameTetros[i]->currStructure]->maxX;
+                    for (y = 0; y < currMaxY; y++) {
+                        for (x = 0; x < currMaxX; x++) {
+                            if (
+                                ((activeTetX >= gameTetros[i]->xPos && 
+                                activeTetX < gameTetros[i]->xPos + (currMaxX * TETRO_WIDTH)) ||
+                                (activeTetX + (k * TETRO_WIDTH) > gameTetros[i]->xPos && 
+                                activeTetX + (j * TETRO_WIDTH) <= gameTetros[i]->xPos + (currMaxX * TETRO_WIDTH))) &&
+                                activeTetY + (j * TETRO_HEIGHT) >= gameTetros[i]->yPos
+                            ) {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -257,6 +258,9 @@ void handleTetromino()
         gameTetros[currTet]->yPos += 1;
     } else {
         // the tetro has stopped falling
+        while (gameTetros[currTet]->yPos % TETRO_HEIGHT != 0) {
+            gameTetros[currTet]->yPos += 1;
+        }
         gameTetros[currTet]->isFalling = 0;
     }
     
