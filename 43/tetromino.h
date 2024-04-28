@@ -23,6 +23,13 @@ typedef struct Tetromino
     int isFalling;
 } Tetromino;
 
+typedef struct GridTetro
+{
+    int x;
+    int y;
+    int arrPos;
+} GridTetro;
+
 void initialiseTetromino();
 void handleTetromino();
 void freeTetromino();
