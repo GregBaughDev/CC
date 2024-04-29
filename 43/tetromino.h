@@ -4,6 +4,7 @@
 
 #define TETRO_HEIGHT 25
 #define TETRO_WIDTH 25
+#define FALL_SPEED 30
 
 typedef struct Structure
 {
@@ -22,6 +23,13 @@ typedef struct Tetromino
     int currStructure;
     int isFalling;
 } Tetromino;
+
+typedef struct GridTetro
+{
+    int x;
+    int y;
+    int arrPos;
+} GridTetro;
 
 void initialiseTetromino();
 void handleTetromino();
