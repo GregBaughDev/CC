@@ -4,6 +4,7 @@
 
 #define TETRO_HEIGHT 25
 #define TETRO_WIDTH 25
+#define FALL_SPEED 30
 
 typedef struct Structure
 {

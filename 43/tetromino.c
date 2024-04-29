@@ -38,7 +38,13 @@ Tetromino **tetroArray;
 int currTet = 0;
 int tetArrayCap = 10; // will use for realloc tetroArray
 
-int fallSpeed = 100;
+int fallCounter = 0;
+
+int currStructure;
+int lookahead;
+int isXTurnSafe;
+int isYTurnSafe;
+int isTurnSafe;
 
 Tetromino *createTetromino(int numStructures, Color colour);
 GridTetro *createGridTetro(int x, int y, int arrPos);
@@ -193,17 +199,27 @@ int convertYGridCoordsToPos(int y) {
 void handleTetroMovement()
 {
     // handle falling
-    // UP TO HERE - the pieces are falling too fast!
-    // we could have some sort of function which increase the ypos depending
-    // on a modulo division or something
-    int canTetroFall = tetroArray[currTet]->yPos < gridYMax - 1;
+    int canTetroFall = 
+        tetroArray[currTet]->yPos < gridYMax - 1 && 
+        tetroArray[currTet]->yPos + tetroArray[currTet]->structure[tetroArray[currTet]->currStructure]->maxY < gridYMax;
+    
     if (canTetroFall) {
-        tetroArray[currTet]->yPos++;
+        fallCounter++;
+        if (fallCounter >= FALL_SPEED) {
+            tetroArray[currTet]->yPos++;
+            fallCounter = 0;
+        }
     }
 
     // !isFalling -> add to grid
 
-    int currStructure = tetroArray[currTet]->currStructure;
+    currStructure = tetroArray[currTet]->currStructure;
+    lookahead = tetroArray[currTet]->currStructure + 1 == tetroArray[currTet]->numStructures ? 0 : tetroArray[currTet]->currStructure + 1;
+    isXTurnSafe = tetroArray[currTet]->xPos + 
+        tetroArray[currTet]->structure[lookahead]->maxX - 1 <= gridXMax;
+    isYTurnSafe = tetroArray[currTet]->yPos + tetroArray[currTet]->structure[lookahead]->maxY - 1 <= gridYMax;
+    isTurnSafe = isXTurnSafe && isYTurnSafe;
+
     if (IsKeyPressed(KEY_RIGHT) && tetroArray[currTet]->xPos + (tetroArray[currTet]->structure[currStructure]->maxX - 1) < gridXMax) {
         tetroArray[currTet]->xPos++;
     } 
@@ -212,11 +228,11 @@ void handleTetroMovement()
         tetroArray[currTet]->xPos--;
     } 
     
-    if (IsKeyPressed(KEY_DOWN) && tetroArray[currTet]->isFalling) { // need to do the isFalling update elsewhere
+    if (IsKeyPressed(KEY_DOWN) && tetroArray[currTet]->isFalling && canTetroFall) { // need to do the isFalling update elsewhere
         tetroArray[currTet]->yPos++;
     }
     
-    if (IsKeyPressed(KEY_UP)) {
+    if (IsKeyPressed(KEY_UP) && isTurnSafe) {
         if (tetroArray[currTet]->currStructure + 1 == tetroArray[currTet]->numStructures) {
             tetroArray[currTet]->currStructure = 0;
         } else {
