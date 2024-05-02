@@ -184,7 +184,7 @@ void drawTetrominos()
 }
 
 int convertXGridCoordsToPos(int x) {
-    return GAMEAREA_START_X + (x * TETRO_WIDTH);
+    return (GAMEAREA_START_X + TETRO_WIDTH) + (x * TETRO_WIDTH);
 }
 
 int convertYGridCoordsToPos(int y) {
@@ -198,10 +198,11 @@ int convertYGridCoordsToPos(int y) {
 
 void handleTetroMovement()
 {
+    currStructure = tetroArray[currTet]->currStructure;
     // handle falling
     int canTetroFall = 
         tetroArray[currTet]->yPos < gridYMax - 1 && 
-        tetroArray[currTet]->yPos + tetroArray[currTet]->structure[tetroArray[currTet]->currStructure]->maxY < gridYMax;
+        tetroArray[currTet]->yPos + tetroArray[currTet]->structure[currStructure]->maxY < gridYMax;
     
     if (canTetroFall) {
         fallCounter++;
@@ -209,22 +210,34 @@ void handleTetroMovement()
             tetroArray[currTet]->yPos++;
             fallCounter = 0;
         }
+    } else {
+        tetroArray[currTet]->isFalling = 0;
+        int y, x;
+        for (y = 0; y < tetroArray[currTet]->structure[currStructure]->maxY; y++) {
+            for (x = 0; x < tetroArray[currTet]->structure[currStructure]->maxX; x++) {
+                if (tetroArray[currTet]->structure[currStructure]->structure[y][x]) {
+                    int yPos = tetroArray[currTet]->yPos + y;
+                    int xPos = tetroArray[currTet]->xPos + x;
+                    printf("Ypos: %d, Xpos: %d\n", yPos, xPos);
+                    gameGrid[yPos][xPos] = createGridTetro(xPos, yPos, currTet);
+                }
+            }
+        }
+        // currTet++;
+        // createNextTetro();
     }
 
-    // !isFalling -> add to grid
-
-    currStructure = tetroArray[currTet]->currStructure;
     lookahead = tetroArray[currTet]->currStructure + 1 == tetroArray[currTet]->numStructures ? 0 : tetroArray[currTet]->currStructure + 1;
     isXTurnSafe = tetroArray[currTet]->xPos + 
-        tetroArray[currTet]->structure[lookahead]->maxX - 1 <= gridXMax;
-    isYTurnSafe = tetroArray[currTet]->yPos + tetroArray[currTet]->structure[lookahead]->maxY - 1 <= gridYMax;
+        tetroArray[currTet]->structure[lookahead]->maxX <= gridXMax;
+    isYTurnSafe = tetroArray[currTet]->yPos + tetroArray[currTet]->structure[lookahead]->maxY <= gridYMax;
     isTurnSafe = isXTurnSafe && isYTurnSafe;
 
-    if (IsKeyPressed(KEY_RIGHT) && tetroArray[currTet]->xPos + (tetroArray[currTet]->structure[currStructure]->maxX - 1) < gridXMax) {
+    if (IsKeyPressed(KEY_RIGHT) && tetroArray[currTet]->xPos + (tetroArray[currTet]->structure[currStructure]->maxX) < gridXMax) {
         tetroArray[currTet]->xPos++;
     } 
     
-    if (IsKeyPressed(KEY_LEFT) && tetroArray[currTet]->xPos > 1) {
+    if (IsKeyPressed(KEY_LEFT) && tetroArray[currTet]->xPos > 0) {
         tetroArray[currTet]->xPos--;
     } 
     
@@ -232,7 +245,7 @@ void handleTetroMovement()
         tetroArray[currTet]->yPos++;
     }
     
-    if (IsKeyPressed(KEY_UP) && isTurnSafe) {
+    if (IsKeyPressed(KEY_UP) && tetroArray[currTet]->isFalling && isTurnSafe) {
         if (tetroArray[currTet]->currStructure + 1 == tetroArray[currTet]->numStructures) {
             tetroArray[currTet]->currStructure = 0;
         } else {
