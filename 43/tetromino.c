@@ -171,11 +171,11 @@ void drawTetrominos()
             for (x = 0; x < tetroArray[i]->structure[currStructure]->maxX; x++) {
                 if (tetroArray[i]->structure[currStructure]->structure[y][x]) {
                     DrawRectangle(
-                        convertXGridCoordsToPos(tetroArray[currTet]->xPos + x),
-                        convertYGridCoordsToPos(tetroArray[currTet]->yPos + y),
+                        convertXGridCoordsToPos(tetroArray[i]->xPos + x),
+                        convertYGridCoordsToPos(tetroArray[i]->yPos + y),
                         TETRO_WIDTH,
                         TETRO_HEIGHT,
-                        tetroArray[currTet]->colour
+                        tetroArray[i]->colour
                     );
                 }
             }
@@ -223,8 +223,9 @@ void handleTetroMovement()
                 }
             }
         }
-        // currTet++;
-        // createNextTetro();
+        // TO DO - weird here?
+        currTet++;
+        createNextTetro();
     }
 
     lookahead = tetroArray[currTet]->currStructure + 1 == tetroArray[currTet]->numStructures ? 0 : tetroArray[currTet]->currStructure + 1;
