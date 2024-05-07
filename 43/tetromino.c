@@ -56,6 +56,7 @@ int convertYGridCoordsToPos(int y);
 void createNextTetro();
 bool isTetroCollision(int plusY, int plusX);
 void lineCheck();
+void dropLinesAbove(int y);
 
 const int gridX = (GAMEAREA_END_X - GAMEAREA_START_X - TETRO_WIDTH) / TETRO_WIDTH;
 const int gridY = (GAMEAREA_END_Y - GAMEAREA_START_Y - TETRO_HEIGHT) / TETRO_HEIGHT;
@@ -194,34 +195,54 @@ int convertYGridCoordsToPos(int y) {
 
 void lineCheck()
 {
-    // check if any completed lines
-    // loop through the gameGrid
+    // loop through the gameGrid to check for completed lines
     int y, x;
     for (y = gridYMax - 1; y >= 0; y--) {
         for (x = 0; x < gridXMax; x++) {
-            int isLineComplete = 1;
-            if (gameGrid[y][x] == NULL) { // there's an empty position in the line so continue with the loop
-                isLineComplete = 0;
-                continue;
+            if (gameGrid[y][x] == NULL) {
+                break; // Move to the next row
             }
-            if (isLineComplete && x == gridXMax - 1) {
+            if (gameGrid[y][x] != NULL && x == gridXMax - 1) { 
+                printf("ROW %d COMPLETE!\n", y);
                 int xToRemove;
-                for (xToRemove = 0; xToRemove < gridXMax; x++) {
-                    int structureToRemove = tetroArray[gameGrid[y][xToRemove]->arrPos]->currStructure;
-                    tetroArray[gameGrid[y][xToRemove]->arrPos]->structure[structureToRemove]->structure[gameGrid[y][xToRemove]->y][gameGrid[y][xToRemove]->x] = 0;
-                    // up to here - but we're in some sort of issue
+                for (xToRemove = 0; xToRemove < gridXMax; xToRemove++) {
+                    // check if any completed lines
+                    int arrPos = gameGrid[y][xToRemove]->arrPos;
+                    int currStructure = tetroArray[arrPos]->currStructure;
+                    tetroArray[arrPos]->structure[currStructure]->structure[gameGrid[y][xToRemove]->y][gameGrid[y][xToRemove]->x] = 0;
+                    free(gameGrid[y][xToRemove]);
+                    gameGrid[y][xToRemove] = NULL;
+
+                    // add one to all lines less than length
+                    dropLinesAbove(y - 1);
+                    // then copy everything from the above line to the below line
+
+                    // free everything removed
+                
+                    // free everything in prev position
                 }
-
-                // if a line is removed go through and add one to all lines less than length
-                
-                // then copy everything from the above line to the below line
-
-                // free everything removed
-                
-                // free everything in prev position
             }
         }
     }
+}
+
+void dropLinesAbove(int y)
+{
+    if (y < 0) {
+        return;
+    }
+
+    int xPos;
+    for (xPos = 0; xPos < gridXMax; xPos++) {
+        if (gameGrid[y][xPos] != NULL) {
+            GridTetro *temp = gameGrid[y][xPos];
+            temp->y++;
+            free(gameGrid[y][xPos]); // UP TO HERE -> Curr issue, double free somewhere?
+            gameGrid[y][xPos] = NULL;
+            gameGrid[temp->y][xPos] = temp;
+        }
+    }
+    return dropLinesAbove(y - 1);
 }
 
 bool isTetroCollision(int plusY, int plusX)
