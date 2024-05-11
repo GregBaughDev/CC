@@ -234,12 +234,21 @@ void dropLinesAbove(int y)
 
     int xPos;
     for (xPos = 0; xPos < gridXMax; xPos++) {
+        // THIS THE ISSUE :(
+            // If there's something in the array
+            // move it down a line (increase the arr pos)
+            // increase the yPos of the array item by one
+            // 
         if (gameGrid[y][xPos] != NULL) {
-            GridTetro *temp = gameGrid[y][xPos];
-            temp->y++;
-            free(gameGrid[y][xPos]); // UP TO HERE -> Curr issue, double free somewhere?
+            gameGrid[y + 1][xPos] = gameGrid[y][xPos];
+            if (tetroArray[gameGrid[y + 1][xPos]->arrPos]->yPos + tetroArray[gameGrid[y + 1][xPos]->arrPos]->structure[tetroArray[gameGrid[y + 1][xPos]->arrPos]->currStructure]->maxY <= 0) {
+                tetroArray[gameGrid[y + 1][xPos]->arrPos]->yPos++;
+            // } else {
+            //     tetroArray[gameGrid[y + 1][xPos]->arrPos]
+            // }
+            }
+            
             gameGrid[y][xPos] = NULL;
-            gameGrid[temp->y][xPos] = temp;
         }
     }
     return dropLinesAbove(y - 1);
